@@ -10,7 +10,7 @@ const TeacherLogin = ({ onLogin }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    if (username === 'teacher' && password === 'password') {
+    if (username === ' ' && password === ' ') {
       onLogin();
     }
   };
