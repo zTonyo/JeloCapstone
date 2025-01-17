@@ -1,12 +1,11 @@
 import React from 'react';
 import mainCDC from '../assets/mainCDC.png'
-import './Home.css';
 import teacher from '../assets/default.png'
 
 const Home = () => {
     return (
       <div class="">
-        <div class="container d-flex justify-content-between">
+        <div class="home-container d-flex justify-content-around">
           <div class="align-self-between">
             <h2 class="custom-bold">Welcome to Bright </h2>
             <h2 class="custom-bold">Futures Child Care</h2>
