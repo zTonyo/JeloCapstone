@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import mainCDC from '../assets/cropMainCDC.png';
 import logo from '../assets/logo.png';
 
-const TeacherLogin = () => {
+const TeacherLogin = ({ onLogin }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (username === 'teacher' && password === 'password') {
+      onLogin();
+    }
+  };
+  
   return (
     <div className="teacher-container d-flex justify-content-around">
       <div className="align-self-center left-img">
@@ -21,26 +32,14 @@ const TeacherLogin = () => {
           alt="logo"
         />
         <p className="text-center">Login to your account</p>
-        <form id="loginForm">
+        <form onSubmit={handleSubmit} id="loginForm">
           <div className="form-group">
             <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              className="form-control"
-              id="username"
-              placeholder="Enter username"
-              required
-            />
+            <input type="text" className="form-control" id="username" value={username} placeholder="Enter username" onChange={(e)=>setUsername(e.target.value)} required/>
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              id="password"
-              placeholder="Enter password"
-              required
-            />
+            <input type="password" className="form-control" id="password" value={password} placeholder="Enter password" onChange={(e) => setPassword(e.target.value)} required/>
           </div>
           <div className="d-flex justify-content-between">
             <div className="remember-me form-group">

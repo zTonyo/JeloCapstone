@@ -9,8 +9,10 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light justify-content-between">
       <NavLink className="navbar-brand" to="/">
-        <img src={logo} width="30" height="30" className="d-inline-block align-top" alt="logo"/>
-        CDCMS
+        <div className='d-flex'>
+          <img src={logo} width="50" height="50" className="d-inline-block align-top" alt="logo"/>
+          <p className='cdcms-logo'>CDCMS</p>
+        </div>
       </NavLink>
       <div className="justify-content-end" id="navbarNav">
         <ul className="navbar-nav flex-row">
