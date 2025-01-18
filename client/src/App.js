@@ -28,7 +28,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/teacherlogin" element={<TeacherLogin onLogin={handleLogin} />} />
+        <Route path="/teacherlogin" element={<div onLogin={handleLogin} />} />
         <Route path="/teachersignin" element={<TeacherSignin />} />
       </Routes>
     </Router>
