@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/public/Navbar';
 import NavBar from './components/private/NavBar';
@@ -13,12 +13,22 @@ function App() {
   // Track login state
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  useEffect(() => {
+    // Check if the user is logged in when the app loads
+    const loggedInStatus = localStorage.getItem('isLoggedIn') === 'true';
+    setIsLoggedIn(loggedInStatus);
+  }, []);
+
   const handleLogin = () => {
     setIsLoggedIn(true);
+    // Store login state in localStorage
+    localStorage.setItem('isLoggedIn', 'true');
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
+    // Remove login state from localStorage
+    localStorage.removeItem('isLoggedIn');
   };
 
   return (
@@ -31,7 +41,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/teacherlogin" element={<TeacherLogin onLogin={handleLogin} />} />
         <Route path="/teachersignin" element={<TeacherSignin />} />
-        <Route path="/teacherdashboard" element={<TeacherDashboard />} /> {/* Teacher Dashboard */}
+        <Route path="/teacherdashboard" element={<TeacherDashboard />} />
       </Routes>
     </Router>
   );
