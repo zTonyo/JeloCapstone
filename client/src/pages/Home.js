@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import mainCDC from '../assets/mainCDC.png'
 import teacher from '../assets/default.png'
 
 const Home = () => {
+  useEffect(() => {
+   localStorage.setItem("isLoggedIn", "false");
+  }, []);
+
     return (
       <div class="">
         <div class="home-container d-flex justify-content-around">

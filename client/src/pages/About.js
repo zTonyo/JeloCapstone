@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
-const About = ({ onLogout }) => {
-  const navigate = useNavigate();
-  useEffect(() => {
-    onLogout();
-  }, [onLogout, navigate]);
+const About = () => {
+    useEffect(() => {
+        // Set the 'isLoggedIn' key in localStorage to false
+        localStorage.setItem("isLoggedIn", "false");
+    }, []); // Empty dependency array ensures this runs only once after the component mounts
 
-  return <h1>Hello</h1>;
+    return <h1>Hello</h1>;
 };
 
 export default About;

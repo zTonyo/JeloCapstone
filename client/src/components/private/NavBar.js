@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
 import logo from '../../assets/logo.png';
 
-const NavBar = ({ onLogout }) => {
+const NavBar = () => {
   const [isOffcanvasVisible, setOffcanvasVisible] = useState(false);
+  const navigate = useNavigate(); // Initialize the navigate function
 
   const toggleOffcanvas = () => {
     setOffcanvasVisible(!isOffcanvasVisible);
+  };
+  
+  const handleLogClick = () => {
+    localStorage.setItem("isLoggedIn", "false");
+    navigate('/');
+    window.location.reload();
   };
 
   return (
@@ -13,12 +21,12 @@ const NavBar = ({ onLogout }) => {
       <nav className={`navBar navbar-light ${isOffcanvasVisible ? 'navbar-with-sidebar' : ''}`}>
         <div className='navBar-button-text d-flex'>
           <button type="button" className="navbar-toggler" onClick={toggleOffcanvas}>
-           <i className="navbar-toggler-icon"></i>
+            <i className="navbar-toggler-icon"></i>
           </button>
            <span className='navBar-text'>Child Development Center Management System</span>
         </div>
         
-        <button onClick={onLogout}>
+        <button onClick={handleLogClick}>
           <span className="avatar">
             <div className="avatar-img avatar-initials-min"></div>
           </span>
@@ -39,7 +47,6 @@ const NavBar = ({ onLogout }) => {
           <div className="offcanvas-title p-2" id="offcanvasExampleLabel">
               CDCMS
           </div>
-          {/* <button type="button" className="btn-close text-reset" onClick={toggleOffcanvas} aria-label="Close"></button> */}
         </div>
         <div className="offcanvas-body">
           <p>Some content for the sidebar.</p>

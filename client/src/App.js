@@ -34,7 +34,7 @@ function App() {
   return (
     <Router>
       {/* Conditionally render the navbar based on login state */}
-      {isLoggedIn ? <NavBar onLogout={handleLogout} /> : <Navbar />}
+      {isLoggedIn ? <NavBar /> : <Navbar />}
 
       <Routes>
         <Route path="/" element={<Home />} />
