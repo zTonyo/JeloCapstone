@@ -39,7 +39,7 @@ const Home = () => {
     
         <div class="teachers-section">
           <h3>OUR TEACHERS</h3>
-          <p>Our teachers are passionate and highly qualified, dedicated to helping each child grow and succeed. They create a supportive environment that encourages curiosity, creativity, and a lifelong love of learning.</p>
+          <p1>Our teachers are passionate and highly qualified, dedicated to helping each child grow and succeed. They create a supportive environment that encourages curiosity, creativity, and a lifelong love of learning.</p1>
             <div class="teachers-images">
               <div>
                 <div class="card">

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import logo from '../../assets/logo.png';
 
-const NavBar = () => {
+const NavBar = ({ onLogout }) => {
   const [isOffcanvasVisible, setOffcanvasVisible] = useState(false);
 
   const toggleOffcanvas = () => {
@@ -18,10 +18,11 @@ const NavBar = () => {
            <span className='navBar-text'>Child Development Center Management System</span>
         </div>
         
-          
-        <span className="avatar">
-          <div className="avatar-img avatar-initials-min"></div>
-        </span>
+        <button onClick={onLogout}>
+          <span className="avatar">
+            <div className="avatar-img avatar-initials-min"></div>
+          </span>
+        </button>
       </nav>
 
       {/* Offcanvas Sidebar */}
