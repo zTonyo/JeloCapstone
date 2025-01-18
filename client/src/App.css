@@ -352,3 +352,16 @@
 .navBar-text {
   padding: 5px;
 }
+
+.sideBar-nav {
+  font-size: medium;
+  --bs-link-color: white;
+}
+
+.sideBar-item {
+  padding: 10px 5px;
+}
+
+.offcanvas-body {
+  padding-top: 50px;
+}

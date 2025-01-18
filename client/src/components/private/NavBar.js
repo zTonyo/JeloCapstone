@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
+import { NavLink } from 'react-router-dom'; // Import NavLink to handle routing
 import logo from '../../assets/logo.png';
 
 const NavBar = () => {
@@ -48,9 +49,32 @@ const NavBar = () => {
               CDCMS
           </div>
         </div>
+        
+        {/* Sidebar menu with NavLinks */}
         <div className="offcanvas-body">
-          <p>Some content for the sidebar.</p>
-          <p>More content here.</p>
+          <ul className="nav flex-column sideBar-nav">
+            <li className="nav-item sideBar-item">
+              <NavLink to="/teacherdashboard" className="nav-link">Dashboard</NavLink>
+            </li>
+            <li className="nav-item sideBar-item">
+              <NavLink to="/student-management" className="nav-link">Student Management</NavLink>
+            </li>
+            <li className="nav-item sideBar-item">
+              <NavLink to="/guardian-management" className="nav-link">Guardian Management</NavLink>
+            </li>
+            <li className="nav-item sideBar-item">
+              <NavLink to="/teacher-management" className="nav-link">Teacher Management</NavLink>
+            </li>
+            <li className="nav-item sideBar-item">
+              <NavLink to="/announcement" className="nav-link">Announcement</NavLink>
+            </li>
+            <li className="nav-item sideBar-item">
+              <NavLink to="/grades" className="nav-link">Grades</NavLink>
+            </li>
+            <li className="nav-item sideBar-item">
+              <NavLink to="/ai-record" className="nav-link">AI Record</NavLink>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
