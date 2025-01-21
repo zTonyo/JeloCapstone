@@ -308,6 +308,10 @@
   color: #fff;
   
 }
+.btn-none {
+  background: none;
+  border: none;
+}
 
 .avatar-img {
   position: relative;
@@ -321,7 +325,7 @@
 /* sideBar */
 .navbar-with-sidebar {
   margin: 20px 80px 20px calc(30% + 10px);
-  transition: margin 0.3s ease-in-out;
+  transition: 300ms ease;
 }
 
 .offcanvas-start.show {
