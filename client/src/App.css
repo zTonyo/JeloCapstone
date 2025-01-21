@@ -96,15 +96,15 @@
   padding: 20px;
   width: 300px;
   text-align: center;
-  background-color: transparent; /* Ensure background is transparent */
-  border: none; /* Remove any border */
-  box-shadow: none; /* Remove any shadow */
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
 }
   
 .teachers-images img {
   max-width: 100%;
   height: auto;
-  border-radius: 50%; /* Keep or remove for circular images */
+  border-radius: 50%;
 }
   
 .teachers-images p {
@@ -113,20 +113,17 @@
   color: #000;
 }
   
-  
-  @media (max-width: 768px) {
-.teachers-images {
+@media (max-width: 768px) {
+  .teachers-images {
     flex-direction: column;
     align-items: center;
-}
-  
-.teachers-images .card {
+  }
+  .teachers-images .card {
     width: 80%;
+  }
 }
-}
-  
 
-  img {
+img {
   max-width: 100%;
   height: auto;
 }
@@ -273,6 +270,36 @@
   margin: auto 10px;
 }
 
+  /* Navbar */
+.navbar {
+  margin: 0px 100px;
+}
+
+.navbar-nav {
+  font-size: small;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  color: #060303;
+}
+
+.navbar-nav .nav-link {
+  color: #000000;
+  margin: 0 10px;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #d1e8ff;
+}
+
   /* NavBar */
 .navBar {
   position: sticky;
@@ -323,6 +350,10 @@
 }
 
 /* sideBar */
+.wrapper {
+  font-family: "Inter", sans-serif;
+}
+
 .navbar-with-sidebarOpen {
   margin-left: 17rem;
   padding-left: 1.3rem;
@@ -357,12 +388,12 @@
   transition: 500ms ease;
 }
 
-.offcanvas-header {
+/* .offcanvas-header {
   justify-content: center;
   border-bottom: 3px solid #f0f0f0;
   box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.2);
   padding-bottom: 10px;
-}
+} */
 
 .offcanvas-title {
   color: white;
@@ -431,6 +462,21 @@
 .fe-menu:before {
   content: "";
   color: #f7f7f7;
+}
+
+.fe-x:before {
+  content: ""; 
+}
+
+.sidebar-toggler {
+  position: absolute;
+  color: #f7f7f7;
+  width: 50px;
+  font-weight: normal;
+  font-size: 16px;
+  display: inline-block;
+  background-color: transparent;
+  border: 1px solid transparent;
 }
 
 .fe {

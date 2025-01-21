@@ -10,25 +10,16 @@ import TeacherDashboard from './pages/teacherPage/dashboard'; // Teacher dashboa
 import './App.css';
 
 function App() {
-  // Track login state
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Check if the user is logged in when the app loads
     const loggedInStatus = localStorage.getItem('isLoggedIn') === 'true';
     setIsLoggedIn(loggedInStatus);
   }, []);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
-    // Store login state in localStorage
     localStorage.setItem('isLoggedIn', 'true');
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    // Remove login state from localStorage
-    localStorage.removeItem('isLoggedIn');
   };
 
   return (

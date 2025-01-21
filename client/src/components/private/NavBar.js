@@ -24,7 +24,7 @@ const NavBar = () => {
   };
 
   return (
-    <div>
+    <div className='wrapper'>
       <nav className={`navBar navbar-light ${isOffcanvasVisible ? 'navbar-with-sidebarOpen' : 'navbar-with-sidebarClose'}`}>
         <div className='navBar-button-text d-flex'>
           <button type="button" className="navbar-toggler" onClick={toggleOffcanvas}>
@@ -41,19 +41,18 @@ const NavBar = () => {
       </nav>
 
       {/* Offcanvas Sidebar */}
-      <div
-        className={`offcanvas offcanvas-start ${isOffcanvasVisible ? 'show' : 'hide'}`}
-        tabIndex="-1"
-        id="offcanvas-side"
-        aria-labelledby="offcanvas-side"
-      >
+      <div className={`offcanvas offcanvas-start ${isOffcanvasVisible ? 'show' : 'hide'}`}
+           tabIndex="-1"
+           id="offcanvas-side"
+           aria-labelledby="offcanvas-side">
         <div className="offcanvas-header">
-          <div className='p-2'>
-            <img src={logo} width="100" height="100" className="d-inline-block align-top" alt="logo"/>
-          </div>
+          <button type="button" className="sidebar-toggler" onClick={toggleOffcanvas}>
+            <i className='fe fe-x'></i>
+          </button>      
+          {/* <img src={logo} width="45" className="d-inline-block align-top" alt="logo"/>
           <div className="offcanvas-title p-2" id="offcanvasExampleLabel">
               CDCMS
-          </div>
+          </div> */}
         </div>
         
         {/* Sidebar menu with NavLinks */}
