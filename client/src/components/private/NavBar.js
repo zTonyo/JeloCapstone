@@ -25,10 +25,10 @@ const NavBar = () => {
 
   return (
     <div>
-      <nav className={`navBar navbar-light ${isOffcanvasVisible ? 'navbar-with-sidebar' : ''}`}>
+      <nav className={`navBar navbar-light ${isOffcanvasVisible ? 'navbar-with-sidebarOpen' : 'navbar-with-sidebarClose'}`}>
         <div className='navBar-button-text d-flex'>
           <button type="button" className="navbar-toggler" onClick={toggleOffcanvas}>
-            <i className="navbar-toggler-icon"></i>
+            <i className="fe fe-menu"></i>
           </button>
            <span className='navBar-text'>Child Development Center Management System</span>
         </div>
@@ -42,10 +42,10 @@ const NavBar = () => {
 
       {/* Offcanvas Sidebar */}
       <div
-        className={`offcanvas offcanvas-start ${isOffcanvasVisible ? 'show' : ''}`}
+        className={`offcanvas offcanvas-start ${isOffcanvasVisible ? 'show' : 'hide'}`}
         tabIndex="-1"
-        id="offcanvasExample"
-        aria-labelledby="offcanvasExampleLabel"
+        id="offcanvas-side"
+        aria-labelledby="offcanvas-side"
       >
         <div className="offcanvas-header">
           <div className='p-2'>
@@ -93,6 +93,8 @@ const NavBar = () => {
             </li>
           </ul>
         </div>
+
+
       </div>
     </div>
   );
