@@ -46,9 +46,9 @@ const NavBar = () => {
            id="offcanvas-side"
            aria-labelledby="offcanvas-side">
         <div className="offcanvas-header">
-          <button type="button" className="sidebar-toggler" onClick={toggleOffcanvas}>
+          <a href='#' className="sidebar-toggler" onClick={toggleOffcanvas}>
             <i className='fe fe-x'></i>
-          </button>      
+          </a>      
           {/* <img src={logo} width="45" className="d-inline-block align-top" alt="logo"/>
           <div className="offcanvas-title p-2" id="offcanvasExampleLabel">
               CDCMS
