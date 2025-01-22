@@ -291,13 +291,18 @@ body {
   color: #060303;
 }
 
-.navbar-nav .nav-link {
+/* .navbar-nav .nav-link {
   color: #000000;
   margin: 0 10px;
 }
 
 .navbar-nav .nav-link:hover {
   color: #d1e8ff;
+} */
+
+.nav-link {
+  padding: 0px;
+  color: #ffffff;
 }
 
   /* NavBar */
@@ -420,7 +425,7 @@ body {
 }
 
 .sideBar-item {
-  padding: 10px 5px;
+  color: #ffffff;
 }
 
 .offcanvas-body {
@@ -471,8 +476,8 @@ body {
 
 @font-face {
   font-family: "feather";
-  src: url("./components/private/assets/fonts/feather.eot?29jl7i");
-  src: url("./components/private/assets/fonts/feather.eot?29jl7i#iefix") format("embedded-opentype"), url("./components/private/assets/fonts/feather.ttf?29jl7i") format("truetype"), url("./components/private/assets/fonts/feather.woff?29jl7i") format("woff"), url("./components/private/assets/fonts/feather.svg?29jl7i#feather") format("svg");
+  src: url("./components/private/fonts/feather.eot?29jl7i");
+  src: url("./components/private/fonts/feather.eot?29jl7i#iefix") format("embedded-opentype"), url("./components/private/fonts/feather.ttf?29jl7i") format("truetype"), url("./components/private/fonts/feather.woff?29jl7i") format("woff"), url("./components/private/fonts/feather.svg?29jl7i#feather") format("svg");
   font-weight: normal;
   font-style: normal;
   font-display: block; 

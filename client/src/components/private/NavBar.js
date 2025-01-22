@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
-import { NavLink } from 'react-router-dom'; // Import NavLink to handle routing
+import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import logo from '../../assets/logo.png';
-// import dashboard from './assets/iconDashboard.png';
-// import announcement from './assets/iconAnnouncement.png';
-// import guardianManagement from './assets/iconGuardianMngt.png';
-// import GAA from './assets/iconGAA.png';
-// import studentManagement from './assets/iconStudMngt.png';
-// import teacherManagement from './assets/iconTeacherMngt.png';
-import 'font-awesome/css/font-awesome.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChartLine } from '@fortawesome/free-solid-svg-icons';
 
 const NavBar = () => {
   const [isOffcanvasVisible, setOffcanvasVisible] = useState(false);
@@ -60,7 +55,7 @@ const NavBar = () => {
         </div>
         <ul className="nav flex-column sideBar-nav">
           <li className="nav-item sideBar-item d-flex align-items-center">
-            <i className='fa fa-line-chart'></i>
+            <FontAwesomeIcon icon={faChartLine} />
             <NavLink to="#" className="nav-link">Admin Dashboard</NavLink>
           </li>
         </ul>
