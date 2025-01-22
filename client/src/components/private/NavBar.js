@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartLine } from '@fortawesome/free-solid-svg-icons';
+import { faGaugeHigh, faGraduationCap, faPeopleRoof, faPersonChalkboard, faBullhorn, faClipboardUser, faNewspaper, faRobot } from '@fortawesome/free-solid-svg-icons';
 
 const NavBar = () => {
   const [isOffcanvasVisible, setOffcanvasVisible] = useState(false);
@@ -48,56 +48,51 @@ const NavBar = () => {
           <div className="offcanvas-title" id="offcanvasExampleLabel">
             <img src={logo} width="45" className="d-inline-block logo-style" alt="logo"/>
             <div>
-              <br/>
-              <span>CDCMS</span>
+              <span>PORTAL</span>
             </div>
           </div>
-        </div>
+        </div >
+
+        {/* Sidebar menu with NavLinks */}
         <ul className="nav flex-column sideBar-nav">
           <li className="nav-item sideBar-item d-flex align-items-center">
-            <FontAwesomeIcon icon={faChartLine} />
-            <NavLink to="#" className="nav-link">Admin Dashboard</NavLink>
+          <FontAwesomeIcon icon={faGaugeHigh} />
+            <NavLink to="/teacherdashboard" className="nav-link">Dashboard</NavLink>
           </li>
         </ul>
-        {/* Sidebar menu with NavLinks */}
-        <div className="offcanvas-body">
-          <ul className="nav flex-column sideBar-nav">
-            <li className="nav-item sideBar-item d-flex align-items-center">
-              {/* <img src={dashboard} width="40" height="40" className="d-inline-block align-top" alt="dashboard"/> */}
-              <NavLink to="/teacherdashboard" className="nav-link">Dashboard</NavLink>
-            </li>
-            <li className="nav-item sideBar-item d-flex align-items-center">
-              {/* <img src={studentManagement} width="40" height="40" className="d-inline-block align-top" alt="studentManagement"/> */}
-              <NavLink to="/student-management" className="nav-link">Student Management</NavLink>
-            </li>
-            <li className="nav-item sideBar-item d-flex align-items-center">
-              {/* <img src={guardianManagement} width="40" height="40" className="d-inline-block align-top" alt="guardianManagement"/> */}
-              <NavLink to="/guardian-management" className="nav-link">Guardian Management</NavLink>
-            </li>
-            <li className="nav-item sideBar-item d-flex align-items-center">
-              {/* <img src={teacherManagement} width="40" height="40" className="d-inline-block align-top" alt="teacherManagement"/> */}
-              <NavLink to="/teacher-management" className="nav-link">Teacher Management</NavLink>
-            </li>
-            <li className="nav-item sideBar-item d-flex align-items-center">
-              {/* <img src={announcement} width="40" height="40" className="d-inline-block align-top" alt="announcement"/> */}
-              <NavLink to="/announcement" className="nav-link">Announcement</NavLink>
-            </li>
-            <li className="nav-item sideBar-item d-flex align-items-center">
-              {/* <img src={GAA} width="40" height="40" className="d-inline-block align-top" alt="attendance"/> */}
-              <NavLink to="/announcement" className="nav-link">Attendance</NavLink>
-            </li>
-            <li className="nav-item sideBar-item d-flex align-items-center">
-              {/* <img src={GAA} width="40" height="40" className="d-inline-block align-top" alt="grades"/> */}
-              <NavLink to="/grades" className="nav-link">Grades</NavLink>
-            </li>
-            <li className="nav-item sideBar-item d-flex align-items-center">
-              {/* <img src={GAA} width="40" height="40" className="d-inline-block align-top" alt="AIrecord"/> */}
-              <NavLink to="/ai-record" className="nav-link">AI Record</NavLink>
-            </li>
-          </ul>
-        </div>
+        
+        <span className='div-sideBar-name'>MAIN COMPONENTS</span>
 
-
+        <ul className="nav flex-column sideBar-nav">
+          <li className="nav-item sideBar-item d-flex align-items-center">
+            <FontAwesomeIcon icon={faGraduationCap} />
+            <NavLink to="/student-management" className="nav-link">Student Management</NavLink>
+          </li>
+          <li className="nav-item sideBar-item d-flex align-items-center">
+            <FontAwesomeIcon icon={faPeopleRoof} />
+            <NavLink to="/guardian-management" className="nav-link">Guardian Management</NavLink>
+          </li>
+          <li className="nav-item sideBar-item d-flex align-items-center">
+            <FontAwesomeIcon icon={faPersonChalkboard} />
+            <NavLink to="/teacher-management" className="nav-link">Teacher Management</NavLink>
+          </li>
+          <li className="nav-item sideBar-item d-flex align-items-center">
+            <FontAwesomeIcon icon={faBullhorn} />
+            <NavLink to="/announcement" className="nav-link">Announcement</NavLink>
+          </li>
+          <li className="nav-item sideBar-item d-flex align-items-center">
+            <FontAwesomeIcon icon={faClipboardUser} />
+            <NavLink to="/announcement" className="nav-link">Attendance</NavLink>
+          </li>
+          <li className="nav-item sideBar-item d-flex align-items-center">
+            <FontAwesomeIcon icon={faNewspaper} />
+            <NavLink to="/grades" className="nav-link">Grades</NavLink>
+          </li>
+          <li className="nav-item sideBar-item d-flex align-items-center">
+            <FontAwesomeIcon icon={faRobot} />
+            <NavLink to="/ai-record" className="nav-link">AI Record</NavLink>
+          </li>
+        </ul>
       </div>
     </div>
   );
