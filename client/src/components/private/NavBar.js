@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
 import { NavLink } from 'react-router-dom'; // Import NavLink to handle routing
 import logo from '../../assets/logo.png';
-import dashboard from './assets/iconDashboard.png';
-import announcement from './assets/iconAnnouncement.png';
-import guardianManagement from './assets/iconGuardianMngt.png';
-import GAA from './assets/iconGAA.png';
-import studentManagement from './assets/iconStudMngt.png'
-import teacherManagement from './assets/iconTeacherMngt.png'
+// import dashboard from './assets/iconDashboard.png';
+// import announcement from './assets/iconAnnouncement.png';
+// import guardianManagement from './assets/iconGuardianMngt.png';
+// import GAA from './assets/iconGAA.png';
+// import studentManagement from './assets/iconStudMngt.png';
+// import teacherManagement from './assets/iconTeacherMngt.png';
+import 'font-awesome/css/font-awesome.min.css';
 
 const NavBar = () => {
   const [isOffcanvasVisible, setOffcanvasVisible] = useState(false);
@@ -45,49 +46,57 @@ const NavBar = () => {
            tabIndex="-1"
            id="offcanvas-side"
            aria-labelledby="offcanvas-side">
-        <div className="offcanvas-header">
-          <a href='#' className="sidebar-toggler" onClick={toggleOffcanvas}>
-            <i className='fe fe-x'></i>
-          </a>      
-          {/* <img src={logo} width="45" className="d-inline-block align-top" alt="logo"/>
-          <div className="offcanvas-title p-2" id="offcanvasExampleLabel">
-              CDCMS
-          </div> */}
+        <a href='#' className={`sidebar-toggler ${isOffcanvasVisible ? 'toggle-show' : ''}`} onClick={toggleOffcanvas}>
+          <i className='fe fe-x'></i>
+        </a>
+        <div className="offcanvas-header d-flex">
+          <div className="offcanvas-title" id="offcanvasExampleLabel">
+            <img src={logo} width="45" className="d-inline-block logo-style" alt="logo"/>
+            <div>
+              <br/>
+              <span>CDCMS</span>
+            </div>
+          </div>
         </div>
-        
+        <ul className="nav flex-column sideBar-nav">
+          <li className="nav-item sideBar-item d-flex align-items-center">
+            <i className='fa fa-line-chart'></i>
+            <NavLink to="#" className="nav-link">Admin Dashboard</NavLink>
+          </li>
+        </ul>
         {/* Sidebar menu with NavLinks */}
         <div className="offcanvas-body">
           <ul className="nav flex-column sideBar-nav">
             <li className="nav-item sideBar-item d-flex align-items-center">
-              <img src={dashboard} width="40" height="40" className="d-inline-block align-top" alt="dashboard"/>
+              {/* <img src={dashboard} width="40" height="40" className="d-inline-block align-top" alt="dashboard"/> */}
               <NavLink to="/teacherdashboard" className="nav-link">Dashboard</NavLink>
             </li>
             <li className="nav-item sideBar-item d-flex align-items-center">
-              <img src={studentManagement} width="40" height="40" className="d-inline-block align-top" alt="studentManagement"/>
+              {/* <img src={studentManagement} width="40" height="40" className="d-inline-block align-top" alt="studentManagement"/> */}
               <NavLink to="/student-management" className="nav-link">Student Management</NavLink>
             </li>
             <li className="nav-item sideBar-item d-flex align-items-center">
-              <img src={guardianManagement} width="40" height="40" className="d-inline-block align-top" alt="guardianManagement"/>
+              {/* <img src={guardianManagement} width="40" height="40" className="d-inline-block align-top" alt="guardianManagement"/> */}
               <NavLink to="/guardian-management" className="nav-link">Guardian Management</NavLink>
             </li>
             <li className="nav-item sideBar-item d-flex align-items-center">
-              <img src={teacherManagement} width="40" height="40" className="d-inline-block align-top" alt="teacherManagement"/>
+              {/* <img src={teacherManagement} width="40" height="40" className="d-inline-block align-top" alt="teacherManagement"/> */}
               <NavLink to="/teacher-management" className="nav-link">Teacher Management</NavLink>
             </li>
             <li className="nav-item sideBar-item d-flex align-items-center">
-              <img src={announcement} width="40" height="40" className="d-inline-block align-top" alt="announcement"/>
+              {/* <img src={announcement} width="40" height="40" className="d-inline-block align-top" alt="announcement"/> */}
               <NavLink to="/announcement" className="nav-link">Announcement</NavLink>
             </li>
             <li className="nav-item sideBar-item d-flex align-items-center">
-              <img src={GAA} width="40" height="40" className="d-inline-block align-top" alt="attendance"/>
+              {/* <img src={GAA} width="40" height="40" className="d-inline-block align-top" alt="attendance"/> */}
               <NavLink to="/announcement" className="nav-link">Attendance</NavLink>
             </li>
             <li className="nav-item sideBar-item d-flex align-items-center">
-              <img src={GAA} width="40" height="40" className="d-inline-block align-top" alt="grades"/>
+              {/* <img src={GAA} width="40" height="40" className="d-inline-block align-top" alt="grades"/> */}
               <NavLink to="/grades" className="nav-link">Grades</NavLink>
             </li>
             <li className="nav-item sideBar-item d-flex align-items-center">
-              <img src={GAA} width="40" height="40" className="d-inline-block align-top" alt="AIrecord"/>
+              {/* <img src={GAA} width="40" height="40" className="d-inline-block align-top" alt="AIrecord"/> */}
               <NavLink to="/ai-record" className="nav-link">AI Record</NavLink>
             </li>
           </ul>

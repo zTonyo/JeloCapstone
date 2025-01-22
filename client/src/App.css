@@ -389,18 +389,22 @@ body {
 }
 
 .offcanvas-header {
-  /* justify-content: center;
-  border-bottom: 3px solid #f0f0f0;
-  box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.2); */
-  padding: 0;
+  margin-bottom: 1rem;
+  width: 100%;
+  padding: 8px 16px;
 }
 
 .offcanvas-title {
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  font-size: xx-large;
-  margin: 30px 0px;
-  font-style: solid;
+  color: #f7f7f7;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  margin: 0.5rem 0 0 0;
+  flex: 1 1 auto;
+  background-color: transparent;
+  text-decoration: none;
+  padding-top: 0.33594rem;
+  padding-bottom: 0.33594rem;
 }
 
 .navBar-button-text {
@@ -412,8 +416,7 @@ body {
 }
 
 .sideBar-nav {
-  font-size: medium;
-  --bs-link-color: white;
+  display: block;
 }
 
 .sideBar-item {
@@ -440,6 +443,22 @@ body {
     width: 93%;
     margin: 0 auto;
     margin-top: 0.45rem;
+  }
+  .sidebar-toggler.toggle-show {
+    position: absolute;
+    z-index: 100;
+    color: #f7f7f7;
+    width: 50px;
+    font-weight: normal;
+    font-size: 16px;
+    display: inline-block;
+    background-color: transparent;
+    border: 1px solid transparent;
+    text-decoration: none;
+    top: 0;
+    padding: 6px 12px;
+    margin-top: 16px;
+    margin-left: 8px;
   }
   .navbar-with-sidebarClose {
     padding-left: 1.2rem;
@@ -469,16 +488,7 @@ body {
 }
 
 .sidebar-toggler {
-  position: absolute;
-  z-index: 100;
-  color: #f7f7f7;
-  width: 50px;
-  font-weight: normal;
-  font-size: 16px;
-  display: inline-block;
-  background-color: transparent;
-  border: 1px solid transparent;
-  text-decoration: none;
+  display: none;
 }
 
 .fe {
@@ -490,4 +500,8 @@ body {
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.logo-style {
+  text-align: center;
 }
