@@ -1,20 +1,15 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
-import { NavLink } from 'react-router-dom'; // Import NavLink to handle routing
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import logo from '../../assets/logo.png';
-import dashboard from './assets/iconDashboard.png';
-import announcement from './assets/iconAnnouncement.png';
-import guardianManagement from './assets/iconGuardianMngt.png';
-import GAA from './assets/iconGAA.png';
-import studentManagement from './assets/iconStudMngt.png'
-import teacherManagement from './assets/iconTeacherMngt.png'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGaugeHigh, faGraduationCap, faPeopleRoof, faPersonChalkboard, faBullhorn, faClipboardUser, faNewspaper, faRobot } from '@fortawesome/free-solid-svg-icons';
 
-const NavBar = () => {
-  const [isOffcanvasVisible, setOffcanvasVisible] = useState(false);
+const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
   const navigate = useNavigate(); // Initialize the navigate function
 
   const toggleOffcanvas = () => {
-    setOffcanvasVisible(!isOffcanvasVisible);
+    setSidebarOpen(!sidebarOpen);
   };
   
   const handleLogClick = () => {
@@ -24,11 +19,11 @@ const NavBar = () => {
   };
 
   return (
-    <div>
-      <nav className={`navBar navbar-light ${isOffcanvasVisible ? 'navbar-with-sidebar' : ''}`}>
+    <div className='wrapper'>
+      <nav className={`navBar navbar-light ${sidebarOpen ? 'navbar-with-sidebarOpen' : 'navbar-with-sidebarClose'}`}>
         <div className='navBar-button-text d-flex'>
           <button type="button" className="navbar-toggler" onClick={toggleOffcanvas}>
-            <i className="navbar-toggler-icon"></i>
+            <i className="fe fe-menu"></i>
           </button>
            <span className='navBar-text'>Child Development Center Management System</span>
         </div>
@@ -41,58 +36,62 @@ const NavBar = () => {
       </nav>
 
       {/* Offcanvas Sidebar */}
-      <div
-        className={`offcanvas offcanvas-start ${isOffcanvasVisible ? 'show' : ''}`}
-        tabIndex="-1"
-        id="offcanvasExample"
-        aria-labelledby="offcanvasExampleLabel"
-      >
-        <div className="offcanvas-header">
-          <div className='p-2'>
-            <img src={logo} width="100" height="100" className="d-inline-block align-top" alt="logo"/>
+      <div className={`offcanvas offcanvas-start ${sidebarOpen ? 'show' : 'hide'}`}
+           tabIndex="-1"
+           id="offcanvas-side"
+           aria-labelledby="offcanvas-side">
+        <button className={`sidebar-toggler ${sidebarOpen ? 'toggle-show' : ''}`} onClick={toggleOffcanvas}>
+          <i className='fe fe-x'></i>
+        </button>
+        <div className="offcanvas-header d-flex">
+          <div className="offcanvas-title" id="offcanvasExampleLabel">
+            <img src={logo} width="45" className="d-inline-block logo-style" alt="logo"/>
+            <div>
+              <span>PORTAL</span>
+            </div>
           </div>
-          <div className="offcanvas-title p-2" id="offcanvasExampleLabel">
-              CDCMS
-          </div>
-        </div>
-        
+        </div >
+
         {/* Sidebar menu with NavLinks */}
-        <div className="offcanvas-body">
-          <ul className="nav flex-column sideBar-nav">
-            <li className="nav-item sideBar-item d-flex align-items-center">
-              <img src={dashboard} width="40" height="40" className="d-inline-block align-top" alt="dashboard"/>
-              <NavLink to="/teacherdashboard" className="nav-link">Dashboard</NavLink>
-            </li>
-            <li className="nav-item sideBar-item d-flex align-items-center">
-              <img src={studentManagement} width="40" height="40" className="d-inline-block align-top" alt="studentManagement"/>
-              <NavLink to="/student-management" className="nav-link">Student Management</NavLink>
-            </li>
-            <li className="nav-item sideBar-item d-flex align-items-center">
-              <img src={guardianManagement} width="40" height="40" className="d-inline-block align-top" alt="guardianManagement"/>
-              <NavLink to="/guardian-management" className="nav-link">Guardian Management</NavLink>
-            </li>
-            <li className="nav-item sideBar-item d-flex align-items-center">
-              <img src={teacherManagement} width="40" height="40" className="d-inline-block align-top" alt="teacherManagement"/>
-              <NavLink to="/teacher-management" className="nav-link">Teacher Management</NavLink>
-            </li>
-            <li className="nav-item sideBar-item d-flex align-items-center">
-              <img src={announcement} width="40" height="40" className="d-inline-block align-top" alt="announcement"/>
-              <NavLink to="/announcement" className="nav-link">Announcement</NavLink>
-            </li>
-            <li className="nav-item sideBar-item d-flex align-items-center">
-              <img src={GAA} width="40" height="40" className="d-inline-block align-top" alt="attendance"/>
-              <NavLink to="/announcement" className="nav-link">Attendance</NavLink>
-            </li>
-            <li className="nav-item sideBar-item d-flex align-items-center">
-              <img src={GAA} width="40" height="40" className="d-inline-block align-top" alt="grades"/>
-              <NavLink to="/grades" className="nav-link">Grades</NavLink>
-            </li>
-            <li className="nav-item sideBar-item d-flex align-items-center">
-              <img src={GAA} width="40" height="40" className="d-inline-block align-top" alt="AIrecord"/>
-              <NavLink to="/ai-record" className="nav-link">AI Record</NavLink>
-            </li>
-          </ul>
-        </div>
+        <ul className="nav flex-column sideBar-nav">
+          <li className="nav-item sideBar-item d-flex align-items-center">
+          <FontAwesomeIcon icon={faGaugeHigh} />
+            <NavLink to="/teacherdashboard" className="nav-link">Dashboard</NavLink>
+          </li>
+        </ul>
+        
+        <span className='div-sideBar-name'>MAIN COMPONENTS</span>
+
+        <ul className="nav flex-column sideBar-nav">
+          <li className="nav-item sideBar-item d-flex align-items-center">
+            <FontAwesomeIcon icon={faGraduationCap} />
+            <NavLink to="/student-management" className="nav-link">Student Management</NavLink>
+          </li>
+          <li className="nav-item sideBar-item d-flex align-items-center">
+            <FontAwesomeIcon icon={faPeopleRoof} />
+            <NavLink to="/guardian-management" className="nav-link">Guardian Management</NavLink>
+          </li>
+          <li className="nav-item sideBar-item d-flex align-items-center">
+            <FontAwesomeIcon icon={faPersonChalkboard} />
+            <NavLink to="/teacher-management" className="nav-link">Teacher Management</NavLink>
+          </li>
+          <li className="nav-item sideBar-item d-flex align-items-center">
+            <FontAwesomeIcon icon={faBullhorn} />
+            <NavLink to="/announcement" className="nav-link">Announcement</NavLink>
+          </li>
+          <li className="nav-item sideBar-item d-flex align-items-center">
+            <FontAwesomeIcon icon={faClipboardUser} />
+            <NavLink to="/announcement" className="nav-link">Attendance</NavLink>
+          </li>
+          <li className="nav-item sideBar-item d-flex align-items-center">
+            <FontAwesomeIcon icon={faNewspaper} />
+            <NavLink to="/grades" className="nav-link">Grades</NavLink>
+          </li>
+          <li className="nav-item sideBar-item d-flex align-items-center">
+            <FontAwesomeIcon icon={faRobot} />
+            <NavLink to="/ai-record" className="nav-link">AI Record</NavLink>
+          </li>
+        </ul>
       </div>
     </div>
   );

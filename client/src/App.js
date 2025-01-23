@@ -10,38 +10,30 @@ import TeacherDashboard from './pages/teacherPage/dashboard'; // Teacher dashboa
 import './App.css';
 
 function App() {
-  // Track login state
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    // Check if the user is logged in when the app loads
     const loggedInStatus = localStorage.getItem('isLoggedIn') === 'true';
     setIsLoggedIn(loggedInStatus);
   }, []);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
-    // Store login state in localStorage
     localStorage.setItem('isLoggedIn', 'true');
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    // Remove login state from localStorage
-    localStorage.removeItem('isLoggedIn');
   };
 
   return (
     <Router>
       {/* Conditionally render the navbar based on login state */}
-      {isLoggedIn ? <NavBar /> : <Navbar />}
+      {isLoggedIn ? <NavBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> : <Navbar />}
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/teacherlogin" element={<TeacherLogin onLogin={handleLogin} />} />
         <Route path="/teachersignin" element={<TeacherSignin />} />
-        <Route path="/teacherdashboard" element={<TeacherDashboard />} />
+        <Route path="/teacherdashboard" element={<TeacherDashboard sidebarOpen={sidebarOpen} />} />
       </Routes>
     </Router>
   );
