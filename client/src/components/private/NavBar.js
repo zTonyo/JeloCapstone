@@ -1,16 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGaugeHigh, faGraduationCap, faPeopleRoof, faPersonChalkboard, faBullhorn, faClipboardUser, faNewspaper, faRobot } from '@fortawesome/free-solid-svg-icons';
 
-const NavBar = () => {
-  const [isOffcanvasVisible, setOffcanvasVisible] = useState(false);
+const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
   const navigate = useNavigate(); // Initialize the navigate function
 
   const toggleOffcanvas = () => {
-    setOffcanvasVisible(!isOffcanvasVisible);
+    setSidebarOpen(!sidebarOpen);
   };
   
   const handleLogClick = () => {
@@ -21,7 +20,7 @@ const NavBar = () => {
 
   return (
     <div className='wrapper'>
-      <nav className={`navBar navbar-light ${isOffcanvasVisible ? 'navbar-with-sidebarOpen' : 'navbar-with-sidebarClose'}`}>
+      <nav className={`navBar navbar-light ${sidebarOpen ? 'navbar-with-sidebarOpen' : 'navbar-with-sidebarClose'}`}>
         <div className='navBar-button-text d-flex'>
           <button type="button" className="navbar-toggler" onClick={toggleOffcanvas}>
             <i className="fe fe-menu"></i>
@@ -37,13 +36,13 @@ const NavBar = () => {
       </nav>
 
       {/* Offcanvas Sidebar */}
-      <div className={`offcanvas offcanvas-start ${isOffcanvasVisible ? 'show' : 'hide'}`}
+      <div className={`offcanvas offcanvas-start ${sidebarOpen ? 'show' : 'hide'}`}
            tabIndex="-1"
            id="offcanvas-side"
            aria-labelledby="offcanvas-side">
-        <a href='#' className={`sidebar-toggler ${isOffcanvasVisible ? 'toggle-show' : ''}`} onClick={toggleOffcanvas}>
+        <button className={`sidebar-toggler ${sidebarOpen ? 'toggle-show' : ''}`} onClick={toggleOffcanvas}>
           <i className='fe fe-x'></i>
-        </a>
+        </button>
         <div className="offcanvas-header d-flex">
           <div className="offcanvas-title" id="offcanvasExampleLabel">
             <img src={logo} width="45" className="d-inline-block logo-style" alt="logo"/>

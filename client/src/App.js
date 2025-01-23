@@ -11,6 +11,7 @@ import './App.css';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     const loggedInStatus = localStorage.getItem('isLoggedIn') === 'true';
@@ -25,14 +26,14 @@ function App() {
   return (
     <Router>
       {/* Conditionally render the navbar based on login state */}
-      {isLoggedIn ? <NavBar /> : <Navbar />}
+      {isLoggedIn ? <NavBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> : <Navbar />}
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/teacherlogin" element={<TeacherLogin onLogin={handleLogin} />} />
         <Route path="/teachersignin" element={<TeacherSignin />} />
-        <Route path="/teacherdashboard" element={<TeacherDashboard />} />
+        <Route path="/teacherdashboard" element={<TeacherDashboard sidebarOpen={sidebarOpen} />} />
       </Routes>
     </Router>
   );
