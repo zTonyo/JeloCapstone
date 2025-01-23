@@ -291,16 +291,18 @@ body {
   color: #060303;
 }
 
-.navbar-nav .nav-link {
+.navbar-nav .side-link {
   color: #000000;
   margin: 0 10px;
 }
 
-.navbar-nav .nav-link:hover {
+.side-link:hover {
   color: #d1e8ff;
+  --bs-nav-link-color: #d1e8ff;
+  --bs-nav-link-hover-color: #d1e8ff;
 }
 
-.nav-link {
+.side-link {
   padding: 0px;
   color: #ffffff;
   font-size: 14px;
@@ -514,9 +516,18 @@ body {
   padding: 24px 0px 4px 0px;
 }
 
-.nav-item:hover {
+.sideBar-item:hover {
   background: #2A5A7F;
-  color: #ffffff; 
+  color: #d1e8ff; 
+  transition: 500ms ease;
+  border-radius: 5px;
+  --bs-nav-link-color: #d1e8ff;
+  --bs-nav-link-hover-color: #d1e8ff;
+}
+
+.sideBar-item.active {
+  background: #2A5A7F;
+  color: #d1e8ff; 
   transition: 500ms ease;
   border-radius: 5px;
 }
