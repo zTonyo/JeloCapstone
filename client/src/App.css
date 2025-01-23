@@ -298,8 +298,6 @@ body {
 
 .side-link:hover {
   color: #d1e8ff;
-  --bs-nav-link-color: #d1e8ff;
-  --bs-nav-link-hover-color: #d1e8ff;
 }
 
 .side-link {
@@ -521,8 +519,6 @@ body {
   color: #d1e8ff; 
   transition: 500ms ease;
   border-radius: 5px;
-  --bs-nav-link-color: #d1e8ff;
-  --bs-nav-link-hover-color: #d1e8ff;
 }
 
 .sideBar-item.active {
