@@ -296,15 +296,19 @@ body {
   margin: 0 10px;
 }
 
-.side-link:hover {
+/* .side-link:hover {
   color: #d1e8ff;
-}
+} */
 
-.side-link {
+.nav-link.side-link{
   padding: 0px;
   color: #ffffff;
   font-size: 14px;
   margin: 0 0 0 8px;
+}
+
+.nav-link.side-link:hover {
+  color: #ffffff;  /* Ensure color stays white on hover */
 }
 
   /* NavBar */
