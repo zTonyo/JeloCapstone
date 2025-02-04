@@ -537,9 +537,9 @@ body {
   margin-bottom: 8px;
 }
 
- /* dashboard */
+ /* Teacher Dashboard */
 .admin-body {
-  transition: margin-left 300ms ease;
+  transition: margin-left 500ms ease;
 }
 
 .admin-body.with-sidebar {
@@ -547,5 +547,18 @@ body {
 }
 
 .admin-body.without-sidebar {
-  margin-left: 0;
+  margin-left: 25px;
+}
+
+.td-head {
+  margin: 25px 25px;
+  font-size: 28px;
+  font-weight: 800;
+  text-shadow: 8px 8px 10px rgba(0, 0, 0, 0.3);
+}
+
+.td-title {
+  margin: 25px 50px;
+  font-size: 24px;
+  font-weight: 600;
 }

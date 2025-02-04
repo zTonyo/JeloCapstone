@@ -13,7 +13,7 @@ function Attendance({ sidebarOpen }) {
 
   return (
     <div>
-      <div className={`admin-body ${sidebarOpen ? 'with-sidebar' : 'withou-sidebar'}`}>
+      <div className={`admin-body ${sidebarOpen ? 'with-sidebar' : 'without-sidebar'}`}>
         <h2>Attendance</h2>
         <p>Welcome to your Attendance</p>
       </div>

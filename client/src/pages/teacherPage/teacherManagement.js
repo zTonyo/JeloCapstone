@@ -13,7 +13,7 @@ function TeacherManagement({ sidebarOpen }) {
 
   return (
     <div>
-      <div className={`admin-body ${sidebarOpen ? 'with-sidebar' : 'withou-sidebar'}`}>
+      <div className={`admin-body ${sidebarOpen ? 'with-sidebar' : 'without-sidebar'}`}>
         <h2>Teacher Management</h2>
         <p>Welcome to your Tmanagement</p>
       </div>
