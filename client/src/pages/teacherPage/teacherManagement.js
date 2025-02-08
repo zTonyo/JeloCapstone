@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function TeacherDashboard({ sidebarOpen }) {
+function TeacherManagement({ sidebarOpen }) {
   const navigate = useNavigate();
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -14,11 +14,11 @@ function TeacherDashboard({ sidebarOpen }) {
   return (
     <div>
       <div className={`admin-body ${sidebarOpen ? 'with-sidebar' : 'without-sidebar'}`}>
-        <p className='td-head'>Welcome to Child Development Center Management System</p>
-        <p className='td-title'>Dashboard</p>
+        <h2>Teacher Management</h2>
+        <p>Welcome to your Tmanagement</p>
       </div>
     </div>
   );
 }
 
-export default TeacherDashboard;
+export default TeacherManagement;

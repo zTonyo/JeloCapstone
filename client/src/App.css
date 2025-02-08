@@ -291,20 +291,24 @@ body {
   color: #060303;
 }
 
-.navbar-nav .nav-link {
+.navbar-nav .side-link {
   color: #000000;
   margin: 0 10px;
 }
 
-.navbar-nav .nav-link:hover {
+/* .side-link:hover {
   color: #d1e8ff;
-}
+} */
 
-.nav-link {
+.nav-link.side-link{
   padding: 0px;
   color: #ffffff;
   font-size: 14px;
   margin: 0 0 0 8px;
+}
+
+.nav-link.side-link:hover {
+  color: #ffffff;  /* Ensure color stays white on hover */
 }
 
   /* NavBar */
@@ -514,9 +518,16 @@ body {
   padding: 24px 0px 4px 0px;
 }
 
-.nav-item:hover {
+.sideBar-item:hover {
   background: #2A5A7F;
-  color: #ffffff; 
+  color: #d1e8ff; 
+  transition: 500ms ease;
+  border-radius: 5px;
+}
+
+.sideBar-item.active {
+  background: #2A5A7F;
+  color: #d1e8ff; 
   transition: 500ms ease;
   border-radius: 5px;
 }
@@ -526,9 +537,9 @@ body {
   margin-bottom: 8px;
 }
 
- /* dashboard */
+ /* Teacher Dashboard */
 .admin-body {
-  transition: margin-left 300ms ease;
+  transition: margin-left 500ms ease;
 }
 
 .admin-body.with-sidebar {
@@ -536,5 +547,18 @@ body {
 }
 
 .admin-body.without-sidebar {
-  margin-left: 0;
+  margin-left: 25px;
+}
+
+.td-head {
+  margin: 25px 25px;
+  font-size: 28px;
+  font-weight: 800;
+  text-shadow: 8px 8px 10px rgba(0, 0, 0, 0.3);
+}
+
+.td-title {
+  margin: 25px 50px;
+  font-size: 24px;
+  font-weight: 600;
 }

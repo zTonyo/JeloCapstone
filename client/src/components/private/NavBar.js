@@ -47,49 +47,49 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
           <div className="offcanvas-title" id="offcanvasExampleLabel">
             <img src={logo} width="45" className="d-inline-block logo-style" alt="logo"/>
             <div>
-              <span>PORTAL</span>
+              <span>CDCMS PORTAL</span>
             </div>
           </div>
         </div >
 
         {/* Sidebar menu with NavLinks */}
         <ul className="nav flex-column sideBar-nav">
-          <li className="nav-item sideBar-item d-flex align-items-center">
+          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/teacherdashboard' ? 'active' : ''}`}>
           <FontAwesomeIcon icon={faGaugeHigh} />
-            <NavLink to="/teacherdashboard" className="nav-link">Dashboard</NavLink>
+            <NavLink to="/teacherdashboard" className="nav-link side-link">Dashboard</NavLink>
           </li>
         </ul>
         
         <span className='div-sideBar-name'>MAIN COMPONENTS</span>
 
         <ul className="nav flex-column sideBar-nav">
-          <li className="nav-item sideBar-item d-flex align-items-center">
+          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/student-management' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faGraduationCap} />
-            <NavLink to="/student-management" className="nav-link">Student Management</NavLink>
+            <NavLink to="/student-management" className="nav-link side-link">Student Management</NavLink>
           </li>
-          <li className="nav-item sideBar-item d-flex align-items-center">
+          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/guardian-management' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faPeopleRoof} />
-            <NavLink to="/guardian-management" className="nav-link">Guardian Management</NavLink>
+            <NavLink to="/guardian-management" className="nav-link side-link">Guardian Management</NavLink>
           </li>
-          <li className="nav-item sideBar-item d-flex align-items-center">
+          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/teacher-management' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faPersonChalkboard} />
-            <NavLink to="/teacher-management" className="nav-link">Teacher Management</NavLink>
+            <NavLink to="/teacher-management" className="nav-link side-link">Teacher Management</NavLink>
           </li>
-          <li className="nav-item sideBar-item d-flex align-items-center">
+          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/announcement' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faBullhorn} />
-            <NavLink to="/announcement" className="nav-link">Announcement</NavLink>
+            <NavLink to="/announcement" className="nav-link side-link">Announcement</NavLink>
           </li>
-          <li className="nav-item sideBar-item d-flex align-items-center">
+          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/attendance' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faClipboardUser} />
-            <NavLink to="/announcement" className="nav-link">Attendance</NavLink>
+            <NavLink to="/attendance" className="nav-link side-link">Attendance</NavLink>
           </li>
-          <li className="nav-item sideBar-item d-flex align-items-center">
+          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/grade' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faNewspaper} />
-            <NavLink to="/grades" className="nav-link">Grades</NavLink>
+            <NavLink to="/grades" className="nav-link side-link">Grades</NavLink>
           </li>
-          <li className="nav-item sideBar-item d-flex align-items-center">
+          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/ai-record' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faRobot} />
-            <NavLink to="/ai-record" className="nav-link">AI Record</NavLink>
+            <NavLink to="/ai-record" className="nav-link side-link">AI Record</NavLink>
           </li>
         </ul>
       </div>
