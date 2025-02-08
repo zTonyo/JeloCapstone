@@ -46,7 +46,7 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
         <div className="offcanvas-header d-flex">
           <div className="offcanvas-title" id="offcanvasExampleLabel">
             <img src={logo} width="45" className="d-inline-block logo-style" alt="logo"/>
-            <div>
+            <div className='NavBar-title'>
               <span>CDCMS PORTAL</span>
             </div>
           </div>

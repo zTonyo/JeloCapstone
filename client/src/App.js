@@ -4,6 +4,7 @@ import Navbar from './components/public/Navbar';
 import NavBar from './components/private/NavBar';
 import Home from './pages/Home';
 import About from './pages/About';
+import EnrollNow from './pages/EnrollNow';
 import TeacherLogin from './pages/TeacherLogin';
 import TeacherSignin from './pages/TeacherSignin';
 import TeacherDashboard from './pages/teacherPage/dashboard';
@@ -32,12 +33,12 @@ function App() {
 
   return (
     <Router>
-      {/* Conditionally render the navbar based on login state */}
       {isLoggedIn ? <NavBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> : <Navbar />}
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/enroll" element={<EnrollNow />} />
         <Route path="/teacherlogin" element={<TeacherLogin onLogin={handleLogin} />} />
         <Route path="/teachersignin" element={<TeacherSignin />} />
         <Route path="/teacherdashboard" element={<TeacherDashboard sidebarOpen={sidebarOpen} />} />
