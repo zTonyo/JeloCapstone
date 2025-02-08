@@ -6,12 +6,6 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import logo from '../../assets/logo.png';
 
 const Navbar = () => {
-  // const navigate = useNavigate();
-  // const handleEnrollNowClick = () => {
-  //   navigate('/enroll');
-  //   window.location.reload();
-  // };
-
   return (
     <nav className="navbar navbar-expand-lg navbar-light justify-content-between">
       <NavLink className="navbar-brand" to="/">

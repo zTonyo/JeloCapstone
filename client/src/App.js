@@ -35,19 +35,6 @@ function App() {
     <Router>
       {isLoggedIn ? <NavBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> : <Navbar />}
 
-      {/* Remove NavBar Into Specific(1) Page */}
-      {/* {isLoggedIn && window.location.pathname !== '/enroll' ? (
-        <NavBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      ) : window.location.pathname !== '/enroll' ? (
-        <Navbar />
-      ) : null} */}
-      {/* Remove NavBar Into Specific(More) Page */}
-      {/* {isLoggedIn && !['/enroll', '/about'].includes(window.location.pathname) ? (
-        <NavBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      ) : !['/enroll', '/about'].includes(window.location.pathname) ? (
-        <Navbar />
-      ) : null} */}
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
