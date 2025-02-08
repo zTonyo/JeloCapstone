@@ -34,6 +34,75 @@ db.connect((err) => {
 //   });
 // });
 
+// Example API Route to add a user
+app.post('/api/users', (req, res) => {
+  const {
+    lName,
+    fName,
+    mName,
+    suffix,
+    bDay,
+    age,
+    sex,
+    healthHistory,
+    addressNumber,
+    brgy,
+    municipality,
+    fatherLName,
+    fatherFName,
+    fatherMName,
+    fatherContactNo,
+    motherLName,
+    motherFName,
+    motherMName,
+    motherContactNo,
+    guardianLName,
+    guardianFName,
+    guardianMName,
+    guardianContatNo,
+    guardianRelationship,
+    guardianEmail,
+    guardianOccupation,
+    schedule,
+    psa,
+    immunizationCard,
+    photo,
+    guardianQCID
+  } = req.body;
+
+  db.query(
+    `INSERT INTO users (
+      lName, fName, mName, suffix, bDay, age, sex, healthHistory,
+      addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
+      fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
+      guardianLName, guardianFName, guardianMName, guardianContatNo, guardianRelationship,
+      guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      lName, fName, mName, suffix, bDay, age, sex, healthHistory,
+      addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
+      fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
+      guardianLName, guardianFName, guardianMName, guardianContatNo, guardianRelationship,
+      guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
+    ],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send('Error adding user');
+      } else {
+        res.status(201).json({
+          id: results.insertId,
+          lName, fName, mName, suffix, bDay, age, sex, healthHistory,
+          addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
+          fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
+          guardianLName, guardianFName, guardianMName, guardianContatNo, guardianRelationship,
+          guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
+        });
+      }
+    }
+  );
+});
+
 // API route to get student management
 app.get('/api/studentManagement', (req, res) => {
     const query = `
