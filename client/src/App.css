@@ -296,10 +296,6 @@ body {
   margin: 0 10px;
 }
 
-/* .side-link:hover {
-  color: #d1e8ff;
-} */
-
 .nav-link.side-link{
   padding: 0px;
   color: #ffffff;
@@ -308,7 +304,21 @@ body {
 }
 
 .nav-link.side-link:hover {
-  color: #ffffff;  /* Ensure color stays white on hover */
+  color: #ffffff;
+}
+
+.btn-enroll-now {
+  background-color: #2a5a7f;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.btn-enroll-now .nav-link {
+  color: white !important;
+}
+
+a.nav-link {
+  padding: 2px;
 }
 
   /* NavBar */
