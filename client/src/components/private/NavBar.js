@@ -20,7 +20,7 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
 
   return (
     <div className='wrapper'>
-      <nav className={`navBar navbar-light ${sidebarOpen ? 'navbar-with-sidebarOpen' : 'navbar-with-sidebarClose'}`}>
+      <nav className={`navBar navbar-light ${sidebarOpen ? 'navbar-with-sidebarClose' : 'navbar-with-sidebarOpen'}`}>
         <div className='navBar-button-text d-flex'>
           <button type="button" className="navbar-toggler" onClick={toggleOffcanvas}>
             <i className="fe fe-menu"></i>
@@ -36,11 +36,11 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
       </nav>
 
       {/* Offcanvas Sidebar */}
-      <div className={`offcanvas offcanvas-start ${sidebarOpen ? 'show' : 'hide'}`}
+      <div className={`offcanvas offcanvas-start ${sidebarOpen ? 'hide' : 'show'}`}
            tabIndex="-1"
            id="offcanvas-side"
            aria-labelledby="offcanvas-side">
-        <button className={`sidebar-toggler ${sidebarOpen ? 'toggle-show' : ''}`} onClick={toggleOffcanvas}>
+        <button className={`sidebar-toggler ${sidebarOpen ? '' : 'toggle-show'}`} onClick={toggleOffcanvas}>
           <i className='fe fe-x'></i>
         </button>
         <div className="offcanvas-header d-flex">

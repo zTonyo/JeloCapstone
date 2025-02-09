@@ -63,12 +63,14 @@ const EnrollNow = () => {
       });
   
       const result = await response.json();
-  
+      
       if (response.ok) {
+        console.log('User added:', result);
         alert('User successfully added!');
         navigate('/')
         window.scrollTo(0, 0);
       } else {
+        console.error('Error adding user:', result);
         alert('Failed to add user. Please try again.');
       }
     } catch (error) {

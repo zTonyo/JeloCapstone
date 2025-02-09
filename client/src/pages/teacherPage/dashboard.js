@@ -13,7 +13,7 @@ function TeacherDashboard({ sidebarOpen }) {
 
   return (
     <div>
-      <div className={`admin-body ${sidebarOpen ? 'with-sidebar' : 'without-sidebar'}`}>
+      <div className={`admin-body ${sidebarOpen ? 'without-sidebar' : 'with-sidebar'}`}>
         <p className='td-head'>Welcome to Child Development Center Management System</p>
         <p className='td-title'>Dashboard</p>
       </div>
