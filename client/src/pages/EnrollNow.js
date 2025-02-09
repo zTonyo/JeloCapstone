@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import cdc from '../assets/cropMainCDC.png';
 import logo from '../assets/logo.png';
+import { useNavigate } from "react-router-dom";
 
 const EnrollNow = () => {
+  const navigate = useNavigate();
   useEffect(() => {
     localStorage.setItem("isLoggedIn", "false");
   }, []);
@@ -57,16 +59,17 @@ const EnrollNow = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData), // Ensure formData is being properly serialized
+        body: JSON.stringify(formData),
       });
   
       const result = await response.json();
   
       if (response.ok) {
-        console.log('User added:', result);
-        // Optionally reset form or show success message
+        alert('User successfully added!');
+        navigate('/')
+        window.scrollTo(0, 0);
       } else {
-        console.error('Error adding user:', result);
+        alert('Failed to add user. Please try again.');
       }
     } catch (error) {
       console.error('Error:', error);

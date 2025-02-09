@@ -36,10 +36,10 @@ function StudentManagement({ sidebarOpen }) {
 
   const checkRequirements = (student) => {
     const missingItems = [];
-    if (!student.psa) missingItems.push('PSA');
-    if (!student.immunizationCard) missingItems.push('Immunization Card');
-    if (!student.photo) missingItems.push('Photo');
-    if (!student.guardianQCID) missingItems.push('Guardian QCID');
+    // if (!student.psa) missingItems.push('PSA');
+    if (!student.immunizationCard) missingItems.push('No Immunization Card');
+    if (!student.photo) missingItems.push('No photo');
+    // if (!student.guardianQCID) missingItems.push('Guardian QCID');
     return missingItems.length > 0 ? missingItems : ['All requirements met'];
   };
 
