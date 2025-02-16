@@ -44,7 +44,6 @@ app.post('/api/users', (req, res) => {
     guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
     guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
   } = req.body;
-
   db.query(
     `INSERT INTO users (
       lName, fName, mName, suffix, bDay, age, sex, healthHistory,
@@ -112,6 +111,40 @@ app.get('/api/guardianManagement', (req, res) => {
     }
     res.json(results);
   });
+});
+
+// Update guardian information based on full name (fName + mName + lName)
+app.put('/api/updateGuardian/:fullName', (req, res) => {
+  const { fullName } = req.params;
+  const [fName, mName, lName] = fullName.split(" ");
+  const {
+    guardianFName, guardianMName, guardianLName,
+    guardianContactNo, guardianEmail, guardianRelationship,
+  } = req.body;
+  const query = `
+    UPDATE users
+    SET guardianFName = ?, guardianMName = ?, guardianLName = ?, guardianContactNo = ?, 
+      guardianEmail = ?, guardianRelationship = ?
+    WHERE fName = ? AND mName = ? AND lName = ?
+  `;
+  db.query(query,
+    [
+      guardianFName, guardianMName, guardianLName, 
+      guardianContactNo, guardianEmail, guardianRelationship,
+      fName, mName, lName
+    ],
+    (err, results) => {
+      if (err) {
+        console.error('Error updating guardian:', err);
+        return res.status(500).json({ error: 'Failed to update guardian' });
+      }
+      res.json({
+        fName, mName, lName, 
+        guardianFName, guardianMName, guardianLName,
+        guardianContactNo, guardianEmail, guardianRelationship,
+      });
+    }
+  );
 });
 
 // Start the server

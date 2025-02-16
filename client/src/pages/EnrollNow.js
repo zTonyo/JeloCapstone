@@ -242,7 +242,13 @@ const EnrollNow = () => {
             <div className="d-flex justify-content-start enroll-group">
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Relationship:</p>
-                <input className="enroll-input-field" value={formData.guardianRelationship} onChange={handleChange} type="text" name="guardianRelationship" required />
+                <select className="enroll-input-field" value={formData.guardianRelationship} onChange={handleChange} type="text" name="guardianRelationship" required>
+                  <option value="">Select Relationship</option>
+                  <option value="Parent">Parent</option>
+                  <option value="Sibling">Sibling</option>
+                  <option value="Grandparent">Grandparent</option>
+                  <option value="Relatives">Relatives</option>
+                </select>
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">Email:</p>

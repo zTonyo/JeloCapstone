@@ -82,7 +82,7 @@ function StudentManagement({ sidebarOpen }) {
             </thead>
             <tbody>
               {currentStudents.map((student) => (
-                <tr className='tbody-content' key={student.id}>
+                <tr>
                   <td>{student.lName + student.bDay}</td>
                   <td>{`${student.lName}, ${student.fName} ${student.mName}`}</td>
                   <td>{`${student.guardianLName}, ${student.guardianFName} ${student.guardianMName}`}</td>

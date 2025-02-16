@@ -676,3 +676,20 @@ a.nav-link {
   --bs-table-color: #fff;
   font-size: 15px;
 }
+
+/* public button */
+.btn-edit-table {
+  border: none;
+  color: #fff;
+  background-color: #2A5A7F;
+  font-size: 20px;
+  padding: 0px 5px;
+}
+
+.td-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
