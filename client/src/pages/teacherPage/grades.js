@@ -13,7 +13,7 @@ function Grades({ sidebarOpen }) {
 
   return (
     <div>
-      <div className={`admin-body ${sidebarOpen ? 'with-sidebar' : 'without-sidebar'}`}>
+      <div className={`admin-body ${sidebarOpen ? 'without-sidebar' : 'with-sidebar'}`}>
         <h2>Grades</h2>
         <p>Welcome to your Grade</p>
       </div>

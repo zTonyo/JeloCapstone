@@ -1,11 +1,82 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import cdc from '../assets/cropMainCDC.png';
 import logo from '../assets/logo.png';
+import { useNavigate } from "react-router-dom";
 
 const EnrollNow = () => {
+  const navigate = useNavigate();
   useEffect(() => {
     localStorage.setItem("isLoggedIn", "false");
   }, []);
+
+  const [formData, setFormData] = useState({
+    lName: '',
+    fName: '',
+    mName: '',
+    suffix: '',
+    bDay: '',
+    age: '',
+    sex: '',
+    healthHistory: '',
+    addressNumber: '',
+    brgy: '',
+    municipality: '',
+    fatherLName: '',
+    fatherFName: '',
+    fatherMName: '',
+    fatherContactNo: '',
+    motherLName: '',
+    motherFName: '',
+    motherMName: '',
+    motherContactNo: '',
+    guardianLName: '',
+    guardianFName: '',
+    guardianMName: '',
+    guardianContactNo: '',
+    guardianRelationship: '',
+    guardianEmail: '',
+    guardianOccupation: '',
+    schedule: '',
+    psa: '',
+    immunizationCard: '',
+    photo: '',
+    guardianQCID: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:5000/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      const result = await response.json();
+      
+      if (response.ok) {
+        console.log('User added:', result);
+        alert('User successfully added!');
+        navigate('/')
+        window.scrollTo(0, 0);
+      } else {
+        console.error('Error adding user:', result);
+        alert('Failed to add user. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };  
 
   return (
     <div>
@@ -24,7 +95,7 @@ const EnrollNow = () => {
           <p>The Child Development Center’s online application process is simple, secure and convenient. You can start filling out your application now, save your progress, and complete it at your convenience. Once registered, you will receive a Student ID Number.</p>
         </div>
         <div className="enroll-body-div">
-          <p className="enroll-body-title">Basic Rquirements</p>
+          <p className="enroll-body-title">Basic Requirements</p>
           <ul>
             <li>Your child meets the age requirement for enrollment</li>
             <li>You can provide a copy of your child's PSA</li>
@@ -42,40 +113,40 @@ const EnrollNow = () => {
         </div>
       </div>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="enroll-body">
           <div className="enroll-body-div enroll-ftext">
             <p className="enroll-body-title">STUDENT BASIC INFORMATION</p>
             <div className="d-flex justify-content-start enroll-group">
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Last Name:</p>
-                <input className="enroll-input-field" type="text" name="lName" required />
+                <input className="enroll-input-field" value={formData.lName} onChange={handleChange} type="text" name="lName" required />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*First Name:</p>
-                <input className="enroll-input-field" type="text" name="fName" required />
+                <input className="enroll-input-field" value={formData.fName} onChange={handleChange} type="text" name="fName" required />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Middle Name:</p>
-                <input className="enroll-input-field" type="text" name="mName" required />
+                <input className="enroll-input-field" value={formData.mName} onChange={handleChange} type="text" name="mName" required />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">Suffix: (if applicable)</p>
-                <input className="enroll-input-field" type="text" name="suffix" />
+                <input className="enroll-input-field" value={formData.suffix} onChange={handleChange} type="text" name="suffix" />
               </div>
             </div>
             <div className="d-flex justify-content-start enroll-group">
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Birthdate:</p>
-                <input className="enroll-input-field" type="date" name="bDay" required />
+                <input className="enroll-input-field" value={formData.bDay} onChange={handleChange} type="date" name="bDay" required />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Age:</p>
-                <input className="enroll-input-field" type="text" name="age" required />
+                <input className="enroll-input-field" value={formData.age} onChange={handleChange} type="text" name="age" required />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Sex:</p>
-                <select className="enroll-input-field" name="sex" required>
+                <select className="enroll-input-field" value={formData.sex} onChange={handleChange} name="sex" required>
                   <option value="">Select Sex</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
@@ -83,7 +154,7 @@ const EnrollNow = () => {
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Health History: (if applicable)</p>
-                <input className="enroll-input-field" type="text" name="age" required />
+                <input className="enroll-input-field" value={formData.healthHistory} onChange={handleChange} type="text" name="healthHistory" required />
               </div>
             </div>
           </div>
@@ -93,90 +164,93 @@ const EnrollNow = () => {
             <div className="d-flex justify-content-start enroll-group">
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Address Number:</p>
-                <input className="enroll-input-field" type="text" name="addressNumber" required />
+                <input className="enroll-input-field" value={formData.addressNumber} onChange={handleChange} type="text" name="addressNumber" required />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Barangay:</p>
-                <input className="enroll-input-field" type="text" name="brgy" required />
+                <input className="enroll-input-field" value={formData.brgy} onChange={handleChange} type="text" name="brgy" required />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Municipality:</p>
-                <input className="enroll-input-field" type="text" name="municipality" required />
+                <input className="enroll-input-field" value={formData.municipality} onChange={handleChange} type="text" name="municipality" required />
               </div>
             </div>
           </div>
 
           <div className="enroll-body-div">
             <p className="enroll-body-title">PARENTS/GUARDIAN INFORMATION</p>
+            {/* Father’s Information */}
             <p className="enroll-sub-text enroll-text-sub">Father's Name</p>
             <div className="d-flex justify-content-start enroll-group">
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Last Name:</p>
-                <input className="enroll-input-field" type="text" name="fatherLName" required />
+                <input className="enroll-input-field" value={formData.fatherLName} onChange={handleChange} type="text" name="fatherLName" required />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*First Name:</p>
-                <input className="enroll-input-field" type="text" name="fatherFName" required />
+                <input className="enroll-input-field" value={formData.fatherFName} onChange={handleChange} type="text" name="fatherFName" required />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">Middle Name:</p>
-                <input className="enroll-input-field" type="text" name="fatherMName" />
+                <input className="enroll-input-field" value={formData.fatherMName} onChange={handleChange} type="text" name="fatherMName" />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Contact Number:</p>
-                <input className="enroll-input-field" type="text" name="fatherContactNo" required />
+                <input className="enroll-input-field" value={formData.fatherContactNo} onChange={handleChange} type="text" name="fatherContactNo" required />
               </div>
             </div>
+            {/* Mother’s Information */}
             <p className="enroll-sub-text enroll-text-sub">Mother's Name</p>
             <div className="d-flex justify-content-start enroll-group">
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Last Name:</p>
-                <input className="enroll-input-field" type="text" name="motherLName" required />
+                <input className="enroll-input-field" value={formData.motherLName} onChange={handleChange} type="text" name="motherLName" required />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*First Name:</p>
-                <input className="enroll-input-field" type="text" name="motherFName" required />
+                <input className="enroll-input-field" value={formData.motherFName} onChange={handleChange} type="text" name="motherFName" required />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">Middle Name:</p>
-                <input className="enroll-input-field" type="text" name="motherMName" />
+                <input className="enroll-input-field" value={formData.motherMName} onChange={handleChange} type="text" name="motherMName" />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Contact Number:</p>
-                <input className="enroll-input-field" type="text" name="motherContactNo" required />
+                <input className="enroll-input-field" value={formData.motherContactNo} onChange={handleChange} type="text" name="motherContactNo" required />
               </div>
             </div>
+            {/* Guardian’s Information */}
             <p className="enroll-sub-text enroll-text-sub">Guardian's Name</p>
             <div className="d-flex justify-content-start enroll-group">
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Last Name:</p>
-                <input className="enroll-input-field" type="text" name="guardianLName" required />
+                <input className="enroll-input-field" value={formData.guardianLName} onChange={handleChange} type="text" name="guardianLName" required />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*First Name:</p>
-                <input className="enroll-input-field" type="text" name="guardianFName" required />
+                <input className="enroll-input-field" value={formData.guardianFName} onChange={handleChange} type="text" name="guardianFName" required />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">Middle Name:</p>
-                <input className="enroll-input-field" type="text" name="guardianMName" />
+                <input className="enroll-input-field" value={formData.guardianMName} onChange={handleChange} type="text" name="guardianMName" />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Contact Number:</p>
-                <input className="enroll-input-field" type="text" name="guardianContactNo" required />
+                <input className="enroll-input-field" value={formData.guardianContactNo} onChange={handleChange} type="text" name="guardianContactNo" required />
               </div>
             </div>
             <div className="d-flex justify-content-start enroll-group">
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Relationship:</p>
-                <input className="enroll-input-field" type="text" name="guardianRelationship" required />
+                <input className="enroll-input-field" value={formData.guardianRelationship} onChange={handleChange} type="text" name="guardianRelationship" required />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">Email:</p>
-                <input className="enroll-input-field" type="text" name="guardianEmail"/>
+                <input className="enroll-input-field" value={formData.guardianEmail} onChange={handleChange} type="text" name="guardianEmail"/>
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">Occupation:</p>
-                <input className="enroll-input-field" type="text" name="guardianOccupation" />
+                <input className="enroll-input-field" value={formData.guardianOccupation} onChange={handleChange} type="text" name="guardianOccupation" />
               </div>
             </div>
           </div>
@@ -186,7 +260,7 @@ const EnrollNow = () => {
             <div className="d-flex justify-content-start enroll-group">
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Preferred Schedule:</p>
-                <input className="enroll-input-field" type="text" name="schedule" required />
+                <input className="enroll-input-field" value={formData.schedule} onChange={handleChange} type="text" name="schedule" required />
               </div>
             </div>
           </div>
@@ -196,24 +270,26 @@ const EnrollNow = () => {
             <div className="d-flex justify-content-start enroll-group">
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Student PSA:</p>
-                <input className="enroll-input-field" type="text" name="psa" required />
+                <input className="enroll-input-field" value={formData.psa} onChange={handleChange} type="text" name="psa" required />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">Immunization Card:</p>
-                <input className="enroll-input-field" type="text" name="immunizationCard" />
+                <input className="enroll-input-field" value={formData.immunizationCard} onChange={handleChange} type="text" name="immunizationCard" />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">Recent Photo:</p>
-                <input className="enroll-input-field" type="text" name="photo" />
+                <input className="enroll-input-field" value={formData.photo} onChange={handleChange} type="text" name="photo" />
               </div>
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Guardian QC ID:</p>
-                <input className="enroll-input-field" type="text" name="guardianQCID" required />
+                <input className="enroll-input-field" value={formData.guardianQCID} onChange={handleChange} type="text" name="guardianQCID" required />
               </div>
             </div>
           </div>
-
-          <button className="btn btn-primary" type="submit">Enroll</button>
+          
+          <div className="d-flex justify-content-center">
+            <button type="submit" className="btn btn-primary">Submit</button>
+          </div>
         </div>
       </form>
     </div>

@@ -13,7 +13,7 @@ function Announcement({ sidebarOpen }) {
 
   return (
     <div>
-      <div className={`admin-body ${sidebarOpen ? 'with-sidebar' : 'without-sidebar'}`}>
+      <div className={`admin-body ${sidebarOpen ? 'without-sidebar' : 'with-sidebar'}`}>
         <h2>Announcement</h2>
         <p>Welcome to your Announcement</p>
       </div>
