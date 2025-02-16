@@ -96,6 +96,23 @@ app.get('/api/studentManagement', (req, res) => {
     });
 });
 
+//GET item for guardian management
+app.get('/api/guardianManagement', (req, res) => {
+  const query = `
+    SELECT 
+      lName, fName, mName, guardianContactNo, guardianEmail,
+      guardianLName, guardianFName, guardianMName, 
+      guardianRelationship
+    FROM users
+  `;
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching students:', err);
+      return res.status(500).send('Error fetching students');
+    }
+    res.json(results);
+  });
+});
 
 // Start the server
 app.listen(port, () => {

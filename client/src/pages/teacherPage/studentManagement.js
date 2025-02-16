@@ -69,20 +69,20 @@ function StudentManagement({ sidebarOpen }) {
         <h2>Student Management</h2>
         <p>Welcome to your Student Management System</p>
         <div className='teacher-div-table'>
-          <table className='table table-bordered'>
+          <table className='table table-bordered table-striped table-sm'>
             <thead>
               <tr className='text-center table-head-columns'>
-                <th>Student I.D.</th>
-                <th>Student Name</th>
-                <th>Guardian</th>
-                <th>Health History</th>
-                <th>Student Schedule</th>
-                <th>Requirements</th>
+                <th scope='col'>Student I.D.</th>
+                <th scope='col'>Student Name</th>
+                <th scope='col'>Guardian</th>
+                <th scope='col'>Health History</th>
+                <th scope='col'>Student Schedule</th>
+                <th scope='col'>Requirements</th>
               </tr>
             </thead>
             <tbody>
               {currentStudents.map((student) => (
-                <tr key={student.id}>
+                <tr className='tbody-content' key={student.id}>
                   <td>{student.lName + student.bDay}</td>
                   <td>{`${student.lName}, ${student.fName} ${student.mName}`}</td>
                   <td>{`${student.guardianLName}, ${student.guardianFName} ${student.guardianMName}`}</td>
@@ -97,7 +97,7 @@ function StudentManagement({ sidebarOpen }) {
           </table>
           {/* Pagination Controls */}
           <div className="pagination-container">
-            <ul className="pagination justify-content-center">
+            <ul className="pagination justify-content-center pagination-content">
               <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
                 <button className="page-link" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
                   Previous

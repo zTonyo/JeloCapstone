@@ -664,25 +664,11 @@ a.nav-link {
   padding: 20px 20px;
   margin-right: 20px;
   margin-bottom: 20px;
-  height: 540px;
-  width: 1250px;
+  font-size: 14px;
 }
 
 .table-head-columns {
-  background-color: #2A5A7F;
+  --bs-table-bg: #2A5A7F;
+  --bs-table-color: #fff;
+  font-size: 15px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
