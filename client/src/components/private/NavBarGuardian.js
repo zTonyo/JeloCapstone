@@ -5,7 +5,7 @@ import logo from '../../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGaugeHigh, faGraduationCap, faPeopleRoof, faPersonChalkboard, faBullhorn, faClipboardUser, faNewspaper, faRobot } from '@fortawesome/free-solid-svg-icons';
 
-const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
+const NavBarGuardian = ({ sidebarOpen, setSidebarOpen }) => {
   const navigate = useNavigate();
 
   const toggleOffcanvas = () => {
@@ -13,7 +13,7 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
   };
   
   const handleLogClick = () => {
-    localStorage.setItem("isLoggedIn", "false");
+    localStorage.setItem("isLoggedInGuardian", "false");
     navigate('/');
     window.location.reload();
   };
@@ -54,23 +54,23 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
 
         {/* Sidebar menu with NavLinks */}
         <ul className="nav flex-column sideBar-nav">
-          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/teacherdashboard' ? 'active' : ''}`}>
+          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/guardiandashboard' ? 'active' : ''}`}>
           <FontAwesomeIcon icon={faGaugeHigh} />
-            <NavLink to="/teacherdashboard" className="nav-link side-link">Dashboard</NavLink>
+            <NavLink to="/guardiandashboard" className="nav-link side-link">Dashboard</NavLink>
           </li>
         </ul>
         
         <span className='div-sideBar-name'>MAIN COMPONENTS</span>
 
         <ul className="nav flex-column sideBar-nav">
-          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/student-management' ? 'active' : ''}`}>
-            <FontAwesomeIcon icon={faGraduationCap} />
-            <NavLink to="/student-management" className="nav-link side-link">Student Management</NavLink>
+          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/guardian-announcement' ? 'active' : ''}`}>
+            <FontAwesomeIcon icon={faBullhorn} />
+            <NavLink to="/guardian-announcement" className="nav-link side-link">Announcement</NavLink>
           </li>
-          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/guardian-management' ? 'active' : ''}`}>
+          {/* <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/guardian-management' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faPeopleRoof} />
             <NavLink to="/guardian-management" className="nav-link side-link">Guardian Management</NavLink>
-          </li>
+          </li> */}
           {/* <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/teacher-management' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faPersonChalkboard} />
             <NavLink to="/teacher-management" className="nav-link side-link">Teacher Management</NavLink>
@@ -97,4 +97,4 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
   );
 };
 
-export default NavBar;
+export default NavBarGuardian;

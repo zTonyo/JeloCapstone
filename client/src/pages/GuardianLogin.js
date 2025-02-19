@@ -3,16 +3,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import mainCDC from '../assets/cropMainCDC.png';
 import logo from '../assets/logo.png';
 
-const TeacherLogin = ({ onLogin }) => {
+const GuardianLogin = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     
-    if (username === 'w' && password === 'w') {
+    if (username === 'g' && password === 'g') {
       onLogin();
-      navigate('/teacherdashboard');
+      navigate('/guardiandashboard');
     }
   };
   
@@ -32,7 +32,7 @@ const TeacherLogin = ({ onLogin }) => {
           height="100"
           alt="logo"
         />
-        <p className="text-center">Login to your Teacher account</p>
+        <p className="text-center">Login to your Guardian account</p>
         <form onSubmit={handleSubmit} id="loginForm">
           <div className="form-group">
             <label htmlFor="username">Username</label>
@@ -55,13 +55,13 @@ const TeacherLogin = ({ onLogin }) => {
             Login
           </button>
         </form>
-        <div className="p-2 text-center text-link">
+        {/* <div className="p-2 text-center text-link">
           Don’t Have An Account?{' '}
           <Link to="/TeacherSignin">Click Here</Link>
-        </div>
+        </div> */}
       </div>
     </div>
   );
 };
 
-export default TeacherLogin;
+export default GuardianLogin;
