@@ -116,7 +116,7 @@ app.get('/api/guardianManagement', (req, res) => {
   });
 });
 
-// Update guardian information based on full name (fName + mName + lName)
+// Update guardian information based on full name
 app.put('/api/updateGuardian/:fullName', (req, res) => {
   const { fullName } = req.params;
   const [fName, mName, lName] = fullName.split(" ");
@@ -150,7 +150,7 @@ app.put('/api/updateGuardian/:fullName', (req, res) => {
   );
 });
 
-// Set up Multer for file upload
+// Multer for file upload
 const announcementStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadPath = '../client/src/assets/announcement';
@@ -166,7 +166,7 @@ const announcementStorage = multer.diskStorage({
 });
 const announcementUpload = multer({ storage: announcementStorage });
 
-// Create new announcement endpoint
+// Create new announcement
 app.post('/api/announcement', announcementUpload.single('picture'), (req, res) => {
   const { title, description, dateAndTime } = req.body;
   const picture = req.file ? '/assets/announcement/' + req.file.filename : null;

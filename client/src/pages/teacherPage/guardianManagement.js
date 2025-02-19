@@ -129,7 +129,7 @@ function GuardianManagement({ sidebarOpen }) {
                 <th scope='col'>Guardian Name</th>
                 <th scope='col'>Contact Number</th>
                 <th scope='col'>Email</th>
-                <th scope='col'>Actions</th>
+                <th scope='col'>Action</th>
               </tr>
             </thead>
             <tbody>
