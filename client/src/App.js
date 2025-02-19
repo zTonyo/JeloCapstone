@@ -23,6 +23,7 @@ import Grades from './pages/teacherPage/grades';
 
 import GuardianDashboard from './pages/guardianPage/dashboard';
 import './App.css';
+import GuardianAnnouncement from './pages/guardianPage/announcement';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -71,6 +72,7 @@ function App() {
         {/* <Route path="/ai-record" element={<aiRecord sidebarOpen={sidebarOpen} />} /> */}
 
         <Route path="/guardiandashboard" element={<GuardianDashboard sidebarOpen={sidebarOpen} />} />
+        <Route path="/guardian-announcement" element={<GuardianAnnouncement sidebarOpen={sidebarOpen} />} />
       </Routes>
     </Router>
   );

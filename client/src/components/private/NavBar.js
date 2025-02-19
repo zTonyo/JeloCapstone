@@ -71,26 +71,26 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
             <FontAwesomeIcon icon={faPeopleRoof} />
             <NavLink to="/guardian-management" className="nav-link side-link">Guardian Management</NavLink>
           </li>
-          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/teacher-management' ? 'active' : ''}`}>
+          {/* <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/teacher-management' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faPersonChalkboard} />
             <NavLink to="/teacher-management" className="nav-link side-link">Teacher Management</NavLink>
-          </li>
-          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/announcement' ? 'active' : ''}`}>
+          </li> */}
+          {/* <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/announcement' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faBullhorn} />
             <NavLink to="/announcement" className="nav-link side-link">Announcement</NavLink>
-          </li>
-          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/attendance' ? 'active' : ''}`}>
+          </li> */}
+          {/* <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/attendance' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faClipboardUser} />
             <NavLink to="/attendance" className="nav-link side-link">Attendance</NavLink>
-          </li>
-          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/grade' ? 'active' : ''}`}>
+          </li> */}
+          {/* <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/grade' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faNewspaper} />
             <NavLink to="/grades" className="nav-link side-link">Grades</NavLink>
-          </li>
-          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/ai-record' ? 'active' : ''}`}>
+          </li> */}
+          {/* <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/ai-record' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faRobot} />
             <NavLink to="/ai-record" className="nav-link side-link">AI Record</NavLink>
-          </li>
+          </li> */}
         </ul>
       </div>
     </div>
