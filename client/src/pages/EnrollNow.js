@@ -7,6 +7,7 @@ const EnrollNow = () => {
   const navigate = useNavigate();
   useEffect(() => {
     localStorage.setItem("isLoggedIn", "false");
+    localStorage.setItem("isLoggedInGuardian", "false");
   }, []);
 
   const [formData, setFormData] = useState({

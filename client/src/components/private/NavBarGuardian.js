@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGaugeHigh, faGraduationCap, faPeopleRoof, faPersonChalkboard, faBullhorn, faClipboardUser, faNewspaper, faRobot } from '@fortawesome/free-solid-svg-icons';
+// import { faGaugeHigh, faGraduationCap, faPeopleRoof, faPersonChalkboard, faBullhorn, faClipboardUser, faNewspaper, faRobot } from '@fortawesome/free-solid-svg-icons';
+import { faGaugeHigh } from '@fortawesome/free-solid-svg-icons';
 
-const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
+const NavBarGuardian = ({ sidebarOpen, setSidebarOpen }) => {
   const navigate = useNavigate();
 
   const toggleOffcanvas = () => {
@@ -13,7 +14,7 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
   };
   
   const handleLogClick = () => {
-    localStorage.setItem("isLoggedIn", "false");
+    localStorage.setItem("isLoggedInGuardian", "false");
     navigate('/');
     window.location.reload();
   };
@@ -54,15 +55,15 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
 
         {/* Sidebar menu with NavLinks */}
         <ul className="nav flex-column sideBar-nav">
-          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/teacherdashboard' ? 'active' : ''}`}>
+          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/guardiandashboard' ? 'active' : ''}`}>
           <FontAwesomeIcon icon={faGaugeHigh} />
-            <NavLink to="/teacherdashboard" className="nav-link side-link">Dashboard</NavLink>
+            <NavLink to="/guardiandashboard" className="nav-link side-link">Dashboard</NavLink>
           </li>
         </ul>
         
         <span className='div-sideBar-name'>MAIN COMPONENTS</span>
 
-        <ul className="nav flex-column sideBar-nav">
+        {/* <ul className="nav flex-column sideBar-nav">
           <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/student-management' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faGraduationCap} />
             <NavLink to="/student-management" className="nav-link side-link">Student Management</NavLink>
@@ -91,10 +92,10 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
             <FontAwesomeIcon icon={faRobot} />
             <NavLink to="/ai-record" className="nav-link side-link">AI Record</NavLink>
           </li>
-        </ul>
+        </ul> */}
       </div>
     </div>
   );
 };
 
-export default NavBar;
+export default NavBarGuardian;
