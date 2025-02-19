@@ -1,6 +1,8 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
+const multer = require('multer');
+const fs = require('fs')
 
 const app = express();
 const port = 5000;
@@ -145,6 +147,39 @@ app.put('/api/updateGuardian/:fullName', (req, res) => {
       });
     }
   );
+});
+
+// Set up Multer for file upload
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadPath = './client/src/assets/announcement';
+    // Create directory if it doesn't exist
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+    cb(null, uploadPath);
+  },
+  filename: (req, file, cb) => {
+    const fileExtension = path.extname(file.originalname);
+    cb(null, Date.now() + fileExtension); // Use timestamp for unique filenames
+  },
+});
+const upload = multer({ storage });
+
+// Endpoint CREATE NEW ANNOUNCEMENT
+app.post('/api/announcement', upload.single('picture'), (req, res) => {
+  const { title, description, dateAndTime } = req.body;
+  const picturePath = req.file ? `/assets/announcement/${req.file.filename}` : null;
+  const query = 'INSERT INTO announcement (title, description, picture, dateAndTime) VALUES (?, ?, ?, ?)';
+  const values = [title, description, picturePath, dateAndTime];
+
+  db.query(query, values, (err, result) => {
+    if (err) {
+      console.error('Error inserting announcement:', err);
+      return res.status(500).json({ message: 'Failed to create announcement' });
+    }
+    res.status(200).json({ message: 'Announcement created successfully', result });
+  });
 });
 
 // Start the server

@@ -692,4 +692,23 @@ a.nav-link {
   align-items: center;
 }
 
+/* teacher announcement page */
+.announcement-title {
+  margin-top: 20px;
+  margin-right: 50px;
+}
+
+/* .announcement-create-btn {
+  width: 250px;
+  height: 30px;
+  padding: 0px;
+}
+
+.announcement-modal-container {
+  border-radius: 8px;
+  box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px 20px;
+  margin: 0px 10%;
+} */
+
 
