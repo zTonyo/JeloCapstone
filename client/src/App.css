@@ -1,3 +1,7 @@
+body {
+  overflow: auto !important; 
+}
+
 /* HomePage */
 .home-container {
   padding: 50px 20px;
@@ -34,9 +38,6 @@
 
 .about-section p {
   font-size: 16px;
-  margin-left: 100px;
-  margin-right: 100px;
-  margin-bottom: 40px;
 }
 
 .mission-vision {
@@ -736,4 +737,28 @@ a.nav-link {
 
 .announcement-tbl-center {
   align-content: center;
+}
+
+/* guardian announcement page */
+.g-ann-container {
+  margin: 0px 10%;
+}
+
+.g-ann-head {
+  margin-left: 15px;
+}
+
+.g-ann-title {
+  font-weight: 600;
+  font-size: x-large;
+}
+
+.g-ann-date-time {
+  font-size: x-small;
+  margin-left: 15px;
+}
+
+.g-ann-desc {
+  font-size: medium;
+  margin-left: 45px;
 }

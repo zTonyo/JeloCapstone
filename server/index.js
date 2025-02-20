@@ -249,6 +249,14 @@ app.put('/api/announcement/:id', announcementUpload.single('picture'), (req, res
   });
 });
 
+app.get('/api/announcement', (req, res) => {
+  db.query('SELECT title, description, dataAndTime, picture FROM announcements', (err, results) => {
+    if (err) {
+      return res.status(500).json({ message: 'Error fetching data', error: err });
+    }
+    res.json(results);
+  });
+});
 
 
 
