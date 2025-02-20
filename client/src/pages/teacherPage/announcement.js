@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 function Announcement({ sidebarOpen }) {
+  document.body.style.overflow = 'auto';
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [announcements, setAnnouncements] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [editingAnnouncement, setEditingAnnouncement] = useState(null);
+
 
   const [formData, setFormData] = useState({
     title: '',
@@ -14,8 +21,28 @@ function Announcement({ sidebarOpen }) {
     picture: null
   });
 
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/announcement');
+        if (!response.ok) {
+          throw new Error('Error fetching announcements');
+        }
+        const data = await response.json();
+        setAnnouncements(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAnnouncements();
+  }, []);
+
   const handleCreateClick = () => {
     setIsModalOpen(true);
+    
   };
 
   const handleCloseModal = () => {
@@ -25,8 +52,9 @@ function Announcement({ sidebarOpen }) {
       description: '',
       date: '',
       time: '',
-      picture: null
+      picture: null,
     });
+    setEditingAnnouncement(null);
   };
 
   // Handle file input change
@@ -49,45 +77,110 @@ function Announcement({ sidebarOpen }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     // Combine date and time to format it as "MMM dd, yyyy hh:mm"
-    const dateObj = new Date(`${formData.date}T${formData.time}`);
+    const dateObj = new Date(`${formData.date} ${formData.time}`);
     const formattedDate = dateObj.toLocaleString('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-      hour12: true
-    });
-
+      hour12: true,
+    }).replace(',', '');
     const data = new FormData();
     data.append('title', formData.title);
     data.append('description', formData.description);
-    data.append('dateAndTime', formattedDate); // Use the formatted date and time
+    data.append('dateAndTime', formattedDate);
     if (formData.picture) {
       data.append('picture', formData.picture);
     }
-
     try {
-      const response = await axios.post('http://localhost:5000/api/announcement', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      console.log('Announcement created:', response.data);
-      handleCloseModal(); // Close the modal after submitting
+      if (editingAnnouncement) {
+        const response = await fetch(
+          `http://localhost:5000/api/announcement/:id`,
+          {
+            method: 'PUT',
+            body: data,
+          }
+        );
+        if (!response.ok) {
+          throw new Error('Error updating announcement');
+        }
+        const updatedAnnouncement = await response.json();
+        setAnnouncements((prevAnnouncements) =>
+          prevAnnouncements.map((announcement) =>
+            announcement.description === updatedAnnouncement.description ? updatedAnnouncement : announcement
+          )
+        );
+      } else {
+        const response = await fetch('http://localhost:5000/api/announcement', {
+          method: 'POST',
+          body: data,
+        });
+        if (!response.ok) {
+          throw new Error('Error creating announcement');
+        }
+        const newAnnouncement = await response.json();
+        setAnnouncements((prevAnnouncements) => [...prevAnnouncements, newAnnouncement]);
+      }
+      handleCloseModal();
     } catch (error) {
-      console.error('Error creating announcement:', error);
+      console.error('Error saving announcement:', error);
     }
+  };  
+
+  // Delete announcement
+  const handleDelete = async (announcementDescription) => {
+    const isConfirmed = window.confirm('Are you sure you want to delete this announcement?');
+    if (!isConfirmed) {
+      return;
+    }
+    try {
+      const response = await fetch('http://localhost:5000/api/announcement', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ description: announcementDescription }),
+      });
+      if (!response.ok) {
+        throw new Error('Error deleting announcement');
+      }
+      setAnnouncements(prevAnnouncements =>
+        prevAnnouncements.filter(announcement => announcement.description !== announcementDescription)
+      );
+    } catch (error) {
+      console.error('Error deleting announcement:', error);
+    }
+  };  
+
+  const handleEdit = (announcement) => {
+    setEditingAnnouncement(announcement);
+    setFormData({
+      title: announcement.title,
+      description: announcement.description,
+      date: announcement.dateAndTime.split(', ')[0],
+      time: announcement.dateAndTime.split(', ')[1],
+      picture: announcement.picture,
+    });
+    setIsModalOpen(true);
   };
 
+  
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
     if (isLoggedIn === "false") {
       navigate('/');
     }
   }, [navigate]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div>
@@ -98,36 +191,72 @@ function Announcement({ sidebarOpen }) {
             Create New Announcement
           </button>
         </div>
+        <div className='teacher-div-table'>
+          <table className='table table-bordered table-striped table-sm'>
+            <thead>
+              <tr className='text-center table-head-columns'>
+                <th scope='col'>Title</th>
+                <th scope='col'>Description</th>
+                <th scope='col'>Date & Time</th>
+                <th scope='col'>Picture</th>
+                <th scope='col'>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {announcements.length > 0 ? (
+                announcements.map((announcement) => (
+                  <tr key={announcement.dateAndTime}>
+                    <td className='announcement-tbl-center'>{announcement.title}</td>
+                    <td className='announcement-tbl-center'>{announcement.description}</td>
+                    <td className='announcement-tbl-center'>{announcement.dateAndTime}</td>
+                    <td className='announcement-tbl-center'>{announcement.picture && <img src={`http://localhost:5000${announcement.picture}`} alt="announcement" style={{ width: '80px' }} />}</td>
+                    <td className="announcement-tbl-center td-btn">
+                      <button className="btn-edit-table" onClick={() => handleEdit(announcement)}>
+                        <FontAwesomeIcon icon={faPenToSquare} />
+                      </button>
+                      <button className="btn-delete-table" onClick={() => handleDelete(announcement.description)}>
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="text-center">No announcements available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Modal */}
       {isModalOpen && (
-        <div className={`admin-body ${sidebarOpen ? 'without-sidebar' : 'with-sidebar'}`}>
-          <div className="announcement-modal-container">
-            <h3>Create New Announcement</h3>
+        <div className="announcement-modal-container">
+          <div className="announcement-modal-body">
+            <h3>{editingAnnouncement ? 'Edit Announcement' : 'Create New Announcement'}</h3>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="title">Title</label>
-                <input type="text" className='form-control' id="title" name="title" value={formData.title} onChange={handleInputChange} required />
+                <input type="text" className='form-control form-control-sm' id="title" name="title" value={formData.title} onChange={handleInputChange} required />
               </div>
               <div className="form-group">
                 <label htmlFor="description">Description</label>
-                <textarea className='form-control' id="description" rows="5" name="description" value={formData.description} onChange={handleInputChange} required />
+                <textarea className='form-control form-control-sm' id="description" rows="3" name="description" value={formData.description} onChange={handleInputChange} required />
               </div>
               <div className="form-group">
                 <label htmlFor="picture">Picture</label>
-                <input type="file" className='form-control' id="picture" name="picture" accept="image/*" onChange={handleFileChange} />
-                {formData.picture && (
-                  <img src={URL.createObjectURL(formData.picture)} alt="Preview" style={{ width: '100px', marginTop: '10px' }} />
-                )}
+                <input type="file" className='form-control form-control-sm' id="picture" name="picture" accept="image/*" onChange={handleFileChange} />
+                {/* {formData.picture && (
+                  <img src={URL.createObjectURL(formData.picture)} alt="Preview" style={{ width: '100px', marginTop: '5px' }} />
+                )} */}
               </div>
               <div className="form-group">
-                <label htmlFor="date">Date</label>
-                <input type="date" className='form-control' id="date" name="date" value={formData.date} onChange={handleInputChange} required />
-              </div>
-              <div className="form-group">
-                <label htmlFor="time">Time</label>
-                <input type="time" className='form-control' id="time" name="time" value={formData.time} onChange={handleInputChange} required />
+                <label htmlFor="date">Date & Time</label>
+                <div className='d-flex justify-content-between'>
+                  <input type="date" className='form-control form-control-sm' id="date" name="date" value={formData.date} onChange={handleInputChange} required />
+                  <input type="time" className='form-control form-control-sm' id="time" name="time" value={formData.time} onChange={handleInputChange} required />
+                </div>
               </div>
               <div className="form-actions d-flex justify-content-between">
                 <button type="submit" className="btn btn-primary">Submit</button>

@@ -20,7 +20,7 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
 
   return (
     <div className='wrapper'>
-      <nav className={`navBar navbar-light ${sidebarOpen ? 'navbar-with-sidebarClose' : 'navbar-with-sidebarOpen'}`}>
+      <nav className={`navBar fixed-top navbar-light ${sidebarOpen ? 'navbar-with-sidebarClose' : 'navbar-with-sidebarOpen'}`}>
         <div className='navBar-button-text d-flex'>
           <button type="button" className="navbar-toggler" onClick={toggleOffcanvas}>
             <i className="fe fe-menu"></i>

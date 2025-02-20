@@ -323,7 +323,6 @@ a.nav-link {
 
   /* NavBar */
 .navBar {
-  position: sticky;
   top: 0.45rem;
   background-color: #0077b6;
   z-index: 100;
@@ -558,10 +557,12 @@ a.nav-link {
 
 .admin-body.with-sidebar {
   margin-left: 17rem;
+  margin-top: 85px;
 }
 
 .admin-body.without-sidebar {
   margin-left: 25px;
+  margin-top: 85px;
 }
 
 .td-head {
@@ -686,29 +687,53 @@ a.nav-link {
   padding: 0px 5px;
 }
 
+.btn-delete-table {
+  border: none;
+  color: #fff;
+  background-color: rgb(220, 0, 0);
+  font-size: 20px;
+  padding: 0px 5px;
+}
+
 .td-btn {
   display: flex;
-  justify-content: center;
+  justify-content:space-around;
   align-items: center;
 }
 
 /* teacher announcement page */
 .announcement-title {
-  margin-top: 20px;
   margin-right: 50px;
 }
 
-/* .announcement-create-btn {
+.announcement-create-btn {
   width: 250px;
   height: 30px;
   padding: 0px;
 }
 
 .announcement-modal-container {
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 8888;
+}
+
+.announcement-modal-body {
+  background-color: #fff;
   border-radius: 8px;
-  box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.2);
-  padding: 20px 20px;
+  box-shadow: 2px 2px 10px 8px rgba(0, 0, 0, 0.3);
+  padding: 20px;
   margin: 0px 10%;
-} */
+  z-index: 9999 !important;
+  position: relative;
+}
 
-
+.announcement-tbl-center {
+  align-content: center;
+}
