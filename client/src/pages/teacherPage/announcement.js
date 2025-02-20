@@ -6,6 +6,9 @@ import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 function Announcement({ sidebarOpen }) {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [announcements, setAnnouncements] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -14,6 +17,25 @@ function Announcement({ sidebarOpen }) {
     time: '',
     picture: null
   });
+
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/announcement');
+        if (!response.ok) {
+          throw new Error('Error fetching announcements');
+        }
+        const data = await response.json();
+        setAnnouncements(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAnnouncements();
+  }, []);
 
   const handleCreateClick = () => {
     setIsModalOpen(true);
@@ -73,9 +95,6 @@ function Announcement({ sidebarOpen }) {
     try {
       const response = await fetch('http://localhost:5000/api/announcement', {
         method: 'POST',
-        headers: {
-          // No need to set 'Content-Type' when using FormData, it will be set automatically
-        },
         body: data,
       });
 
@@ -86,10 +105,37 @@ function Announcement({ sidebarOpen }) {
       const responseData = await response.json();
       console.log('Announcement created:', responseData);
       handleCloseModal(); // Close the modal after submitting
+      // Refetch the announcements after creating a new one
+      setAnnouncements(prevAnnouncements => [...prevAnnouncements, responseData]);
     } catch (error) {
       console.error('Error creating announcement:', error);
     }
   };
+
+  // Delete announcement
+  const handleDelete = async (announcementDescription) => {
+    const isConfirmed = window.confirm('Are you sure you want to delete this announcement?');
+    if (!isConfirmed) {
+      return;
+    }
+    try {
+      const response = await fetch('http://localhost:5000/api/announcement', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ description: announcementDescription }),
+      });
+      if (!response.ok) {
+        throw new Error('Error deleting announcement');
+      }
+      setAnnouncements(prevAnnouncements =>
+        prevAnnouncements.filter(announcement => announcement.description !== announcementDescription)
+      );
+    } catch (error) {
+      console.error('Error deleting announcement:', error);
+    }
+  };  
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -97,6 +143,14 @@ function Announcement({ sidebarOpen }) {
       navigate('/');
     }
   }, [navigate]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div>
@@ -119,20 +173,28 @@ function Announcement({ sidebarOpen }) {
               </tr>
             </thead>
             <tbody>
+              {announcements.length > 0 ? (
+                announcements.map((announcement) => (
+                  <tr key={announcement.dateAndTime}>
+                    <td className='announcement-tbl-center'>{announcement.title}</td>
+                    <td className='announcement-tbl-center'>{announcement.description}</td>
+                    <td className='announcement-tbl-center'>{announcement.dateAndTime}</td>
+                    <td className='announcement-tbl-center'>{announcement.picture && <img src={`http://localhost:5000${announcement.picture}`} alt="announcement" style={{ width: '80px' }} />}</td>
+                    <td className="announcement-tbl-center td-btn">
+                      <button className="btn-edit-table">
+                        <FontAwesomeIcon icon={faPenToSquare} />
+                      </button>
+                      <button className="btn-delete-table" onClick={() => handleDelete(announcement.description)}>
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
                 <tr>
-                  <td>title</td>
-                  <td>description</td>
-                  <td>date and time</td>
-                  <td>picture</td>
-                  <td className="td-btn d-flex justify-content-around">
-                    <button className="btn-edit-table">
-                      <FontAwesomeIcon icon={faPenToSquare} />
-                    </button>
-                    <button className="btn-delete-table">
-                      <FontAwesomeIcon icon={faTrash} />
-                    </button>
-                  </td>
+                  <td colSpan="5" className="text-center">No announcements available</td>
                 </tr>
+              )}
             </tbody>
           </table>
         </div>
@@ -140,39 +202,37 @@ function Announcement({ sidebarOpen }) {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className={`admin-body ${sidebarOpen ? 'without-sidebar' : 'with-sidebar'}`}>
-          <div className="announcement-modal-container">
-            <div className="announcement-modal-body">
-              <h3>Create New Announcement</h3>
-              <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="title">Title</label>
-                  <input type="text" className='form-control form-control-sm' id="title" name="title" value={formData.title} onChange={handleInputChange} required />
+        <div className="announcement-modal-container">
+          <div className="announcement-modal-body">
+            <h3>Create New Announcement</h3>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="title">Title</label>
+                <input type="text" className='form-control form-control-sm' id="title" name="title" value={formData.title} onChange={handleInputChange} required />
+              </div>
+              <div className="form-group">
+                <label htmlFor="description">Description</label>
+                <textarea className='form-control form-control-sm' id="description" rows="3" name="description" value={formData.description} onChange={handleInputChange} required />
+              </div>
+              <div className="form-group">
+                <label htmlFor="picture">Picture</label>
+                <input type="file" className='form-control form-control-sm' id="picture" name="picture" accept="image/*" onChange={handleFileChange} />
+                {formData.picture && (
+                  <img src={URL.createObjectURL(formData.picture)} alt="Preview" style={{ width: '100px', marginTop: '5px' }} />
+                )}
+              </div>
+              <div className="form-group">
+                <label htmlFor="date">Date & Time</label>
+                <div className='d-flex justify-content-between'>
+                  <input type="date" className='form-control form-control-sm' id="date" name="date" value={formData.date} onChange={handleInputChange} required />
+                  <input type="time" className='form-control form-control-sm' id="time" name="time" value={formData.time} onChange={handleInputChange} required />
                 </div>
-                <div className="form-group">
-                  <label htmlFor="description">Description</label>
-                  <textarea className='form-control form-control-sm' id="description" rows="3" name="description" value={formData.description} onChange={handleInputChange} required />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="picture">Picture</label>
-                  <input type="file" className='form-control form-control-sm' id="picture" name="picture" accept="image/*" onChange={handleFileChange} />
-                  {formData.picture && (
-                    <img src={URL.createObjectURL(formData.picture)} alt="Preview" style={{ width: '100px', marginTop: '5px' }} />
-                  )}
-                </div>
-                <div className="form-group">
-                  <label htmlFor="date">Date & Time</label>
-                  <div className='d-flex justify-content-between'>
-                    <input type="date" className='form-control form-control-sm' id="date" name="date" value={formData.date} onChange={handleInputChange} required />
-                    <input type="time" className='form-control form-control-sm' id="time" name="time" value={formData.time} onChange={handleInputChange} required />
-                  </div>
-                </div>
-                <div className="form-actions d-flex justify-content-between">
-                  <button type="submit" className="btn btn-primary">Submit</button>
-                  <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Cancel</button>
-                </div>
-              </form>
-            </div>
+              </div>
+              <div className="form-actions d-flex justify-content-between">
+                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Cancel</button>
+              </div>
+            </form>
           </div>
         </div>
       )}

@@ -323,7 +323,6 @@ a.nav-link {
 
   /* NavBar */
 .navBar {
-  position: sticky;
   top: 0.45rem;
   background-color: #0077b6;
   z-index: 100;
@@ -554,14 +553,17 @@ a.nav-link {
  /* Teacher Dashboard */
 .admin-body {
   transition: margin-left 500ms ease;
+  overflow: auto;
 }
 
 .admin-body.with-sidebar {
   margin-left: 17rem;
+  margin-top: 85px;
 }
 
 .admin-body.without-sidebar {
   margin-left: 25px;
+  margin-top: 85px;
 }
 
 .td-head {
@@ -696,13 +698,12 @@ a.nav-link {
 
 .td-btn {
   display: flex;
-  justify-content: center;
+  justify-content:space-around;
   align-items: center;
 }
 
 /* teacher announcement page */
 .announcement-title {
-  margin-top: 20px;
   margin-right: 50px;
 }
 
@@ -721,7 +722,7 @@ a.nav-link {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 8888;
 }
 
 .announcement-modal-body {
@@ -730,7 +731,11 @@ a.nav-link {
   box-shadow: 2px 2px 10px 8px rgba(0, 0, 0, 0.3);
   padding: 20px;
   margin: 0px 10%;
-  overflow-y: auto;
+  z-index: 9999 !important;
+  position: relative;
 }
 
+.announcement-tbl-center {
+  align-content: center;
+}
 

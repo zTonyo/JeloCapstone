@@ -189,6 +189,67 @@ app.post('/api/announcement', announcementUpload.single('picture'), (req, res) =
   });
 });
 
+app.use('/assets', express.static(path.join(__dirname, '../client/src/assets')));
+
+// Get all announcements
+app.get('/api/announcement', (req, res) => {
+  const query = 'SELECT * FROM announcement';
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching announcements:', err);
+      return res.status(500).json({ error: 'Failed to fetch announcements' });
+    }
+    res.status(200).json(results);
+  });
+});
+
+// DELETE endpoint announcement
+app.delete('/api/announcement', (req, res) => {
+  const { description } = req.body;
+  const query = 'DELETE FROM announcement WHERE description = ?';
+  db.query(query, [description], (err, result) => {
+    if (err) {
+      console.error('Error deleting announcement:', err);
+      return res.status(500).json({ message: 'Error deleting announcement' });
+    }
+    if (result.affectedRows > 0) {
+      return res.status(200).json({ message: 'Announcement deleted successfully' });
+    } else {
+      return res.status(404).json({ message: 'Announcement not found' });
+    }
+  });
+});
+
+// Update announcement by description
+app.put('/api/announcement/:description', announcementUpload.single('picture'), (req, res) => {
+  const { description } = req.params;
+  const { title, dateAndTime } = req.body;
+  const picture = req.file ? '/assets/announcement/' + req.file.filename : null;
+  const query = `
+    UPDATE announcement
+    SET title = ?, description = ?, dateAndTime = ?, picture = ?
+    WHERE description = ?
+  `;
+  db.query(query, [title, description, dateAndTime, picture, description], (err, results) => {
+    if (err) {
+      console.error('Error updating announcement:', err);
+      return res.status(500).json({ error: 'Failed to update announcement' });
+    }
+    if (results.affectedRows > 0) {
+      res.status(200).json({
+        message: 'Announcement updated successfully',
+        description,
+        title,
+        dateAndTime,
+        picture
+      });
+    } else {
+      res.status(404).json({ message: 'Announcement not found' });
+    }
+  });
+});
+
+
 
 // Start the server
 app.listen(port, () => {
