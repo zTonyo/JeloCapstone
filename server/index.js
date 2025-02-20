@@ -220,17 +220,16 @@ app.delete('/api/announcement', (req, res) => {
   });
 });
 
-// Update announcement by description
-app.put('/api/announcement/:description', announcementUpload.single('picture'), (req, res) => {
-  const { description } = req.params;
-  const { title, dateAndTime } = req.body;
+app.put('/api/announcement/:id', announcementUpload.single('picture'), (req, res) => {
+  const { id } = req.params;
+  const { title, description, dateAndTime } = req.body;
   const picture = req.file ? '/assets/announcement/' + req.file.filename : null;
   const query = `
     UPDATE announcement
     SET title = ?, description = ?, dateAndTime = ?, picture = ?
-    WHERE description = ?
+    WHERE id = ?  // Use id as the condition for updating
   `;
-  db.query(query, [title, description, dateAndTime, picture, description], (err, results) => {
+  db.query(query, [title, description, dateAndTime, picture, id], (err, results) => {
     if (err) {
       console.error('Error updating announcement:', err);
       return res.status(500).json({ error: 'Failed to update announcement' });
@@ -238,16 +237,18 @@ app.put('/api/announcement/:description', announcementUpload.single('picture'), 
     if (results.affectedRows > 0) {
       res.status(200).json({
         message: 'Announcement updated successfully',
-        description,
+        id,
         title,
+        description,
         dateAndTime,
-        picture
+        picture,
       });
     } else {
       res.status(404).json({ message: 'Announcement not found' });
     }
   });
 });
+
 
 
 

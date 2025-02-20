@@ -4,11 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 function Announcement({ sidebarOpen }) {
+  document.body.style.overflow = 'auto';
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [announcements, setAnnouncements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [editingAnnouncement, setEditingAnnouncement] = useState(null);
+
 
   const [formData, setFormData] = useState({
     title: '',
@@ -39,6 +42,7 @@ function Announcement({ sidebarOpen }) {
 
   const handleCreateClick = () => {
     setIsModalOpen(true);
+    
   };
 
   const handleCloseModal = () => {
@@ -48,8 +52,9 @@ function Announcement({ sidebarOpen }) {
       description: '',
       date: '',
       time: '',
-      picture: null
+      picture: null,
     });
+    setEditingAnnouncement(null);
   };
 
   // Handle file input change
@@ -72,45 +77,57 @@ function Announcement({ sidebarOpen }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     // Combine date and time to format it as "MMM dd, yyyy hh:mm"
-    const dateObj = new Date(`${formData.date}T${formData.time}`);
+    const dateObj = new Date(`${formData.date} ${formData.time}`);
     const formattedDate = dateObj.toLocaleString('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-      hour12: true
-    });
-
+      hour12: true,
+    }).replace(',', '');
     const data = new FormData();
     data.append('title', formData.title);
     data.append('description', formData.description);
-    data.append('dateAndTime', formattedDate); // Use the formatted date and time
+    data.append('dateAndTime', formattedDate);
     if (formData.picture) {
       data.append('picture', formData.picture);
     }
-
     try {
-      const response = await fetch('http://localhost:5000/api/announcement', {
-        method: 'POST',
-        body: data,
-      });
-
-      if (!response.ok) {
-        throw new Error('Error creating announcement');
+      if (editingAnnouncement) {
+        const response = await fetch(
+          `http://localhost:5000/api/announcement/:id`,
+          {
+            method: 'PUT',
+            body: data,
+          }
+        );
+        if (!response.ok) {
+          throw new Error('Error updating announcement');
+        }
+        const updatedAnnouncement = await response.json();
+        setAnnouncements((prevAnnouncements) =>
+          prevAnnouncements.map((announcement) =>
+            announcement.description === updatedAnnouncement.description ? updatedAnnouncement : announcement
+          )
+        );
+      } else {
+        const response = await fetch('http://localhost:5000/api/announcement', {
+          method: 'POST',
+          body: data,
+        });
+        if (!response.ok) {
+          throw new Error('Error creating announcement');
+        }
+        const newAnnouncement = await response.json();
+        setAnnouncements((prevAnnouncements) => [...prevAnnouncements, newAnnouncement]);
       }
-
-      const responseData = await response.json();
-      console.log('Announcement created:', responseData);
-      handleCloseModal(); // Close the modal after submitting
-      // Refetch the announcements after creating a new one
-      setAnnouncements(prevAnnouncements => [...prevAnnouncements, responseData]);
+      handleCloseModal();
     } catch (error) {
-      console.error('Error creating announcement:', error);
+      console.error('Error saving announcement:', error);
     }
-  };
+  };  
 
   // Delete announcement
   const handleDelete = async (announcementDescription) => {
@@ -137,6 +154,19 @@ function Announcement({ sidebarOpen }) {
     }
   };  
 
+  const handleEdit = (announcement) => {
+    setEditingAnnouncement(announcement);
+    setFormData({
+      title: announcement.title,
+      description: announcement.description,
+      date: announcement.dateAndTime.split(', ')[0],
+      time: announcement.dateAndTime.split(', ')[1],
+      picture: announcement.picture,
+    });
+    setIsModalOpen(true);
+  };
+
+  
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
     if (isLoggedIn === "false") {
@@ -181,7 +211,7 @@ function Announcement({ sidebarOpen }) {
                     <td className='announcement-tbl-center'>{announcement.dateAndTime}</td>
                     <td className='announcement-tbl-center'>{announcement.picture && <img src={`http://localhost:5000${announcement.picture}`} alt="announcement" style={{ width: '80px' }} />}</td>
                     <td className="announcement-tbl-center td-btn">
-                      <button className="btn-edit-table">
+                      <button className="btn-edit-table" onClick={() => handleEdit(announcement)}>
                         <FontAwesomeIcon icon={faPenToSquare} />
                       </button>
                       <button className="btn-delete-table" onClick={() => handleDelete(announcement.description)}>
@@ -204,7 +234,7 @@ function Announcement({ sidebarOpen }) {
       {isModalOpen && (
         <div className="announcement-modal-container">
           <div className="announcement-modal-body">
-            <h3>Create New Announcement</h3>
+            <h3>{editingAnnouncement ? 'Edit Announcement' : 'Create New Announcement'}</h3>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="title">Title</label>
@@ -217,9 +247,9 @@ function Announcement({ sidebarOpen }) {
               <div className="form-group">
                 <label htmlFor="picture">Picture</label>
                 <input type="file" className='form-control form-control-sm' id="picture" name="picture" accept="image/*" onChange={handleFileChange} />
-                {formData.picture && (
+                {/* {formData.picture && (
                   <img src={URL.createObjectURL(formData.picture)} alt="Preview" style={{ width: '100px', marginTop: '5px' }} />
-                )}
+                )} */}
               </div>
               <div className="form-group">
                 <label htmlFor="date">Date & Time</label>

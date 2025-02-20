@@ -553,7 +553,6 @@ a.nav-link {
  /* Teacher Dashboard */
 .admin-body {
   transition: margin-left 500ms ease;
-  overflow: auto;
 }
 
 .admin-body.with-sidebar {
@@ -738,4 +737,3 @@ a.nav-link {
 .announcement-tbl-center {
   align-content: center;
 }
-
