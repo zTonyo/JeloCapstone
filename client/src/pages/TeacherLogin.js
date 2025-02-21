@@ -57,7 +57,7 @@ const TeacherLogin = ({ onLogin }) => {
         </form>
         <div className="p-2 text-center text-link">
           Don’t Have An Account?{' '}
-          <Link to="/TeacherSignin">Click Here</Link>
+          <Link to="/teachersignin">Click Here</Link>
         </div>
       </div>
     </div>

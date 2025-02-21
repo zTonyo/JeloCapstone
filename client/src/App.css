@@ -172,10 +172,14 @@ img {
 }
 
 
-/* TeacherLoginSignIn */
+/* TeacherGuardianLoginSignIn */
 .mainCDC {
   width: 100%;
   height: auto;
+}
+
+.signin-sub-text {
+  font-weight: 600;
 }
 
 .left-img {
