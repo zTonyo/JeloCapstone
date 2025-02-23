@@ -284,7 +284,12 @@ const EnrollNow = () => {
             <div className="d-flex justify-content-start enroll-group">
               <div className="enroll-body-text-input">
                 <p className="enroll-sub-text">*Preferred Schedule:</p>
-                <input className="enroll-input-field" value={formData.schedule} onChange={handleChange} type="text" name="schedule" required />
+                <select className="enroll-input-field" value={formData.schedule} onChange={handleChange} type="text" name="schedule" required>
+                  <option value="">Select schedule</option>
+                  <option value="K1">K1(3y/o) - 8:00AM- 10:00AM</option>
+                  <option value="K2">K2(4y/o) - 10:15AM-12:15PM</option>
+                  <option value="K3">K3(4y/o) - 1:30PM-3:30PM</option>
+                </select>
               </div>
             </div>
           </div>

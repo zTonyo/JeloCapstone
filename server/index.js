@@ -38,59 +38,7 @@ app.get('/api/users', (req, res) => {
   });
 });
 
-// //CREATE NEW ITEM WITH ATTENDANCE
-// app.post('/api/users', (req, res) => {
-//   const {
-//     lName, fName, mName, suffix, bDay, age, sex, healthHistory,
-//     addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
-//     fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
-//     guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
-//     guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
-//   } = req.body;
-//   db.query(
-//     `INSERT INTO users (
-//       lName, fName, mName, suffix, bDay, age, sex, healthHistory,
-//       addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
-//       fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
-//       guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
-//       guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
-//     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-//     [
-//       lName, fName, mName, suffix, bDay, age, sex, healthHistory,
-//       addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
-//       fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
-//       guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
-//       guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
-//     ],
-//     (err, results) => {
-//       if (err) {
-//         console.log(err);
-//         res.status(500).send('Error adding user');
-//       }
-//       const date = new Date().toISOString().split('T')[0];
-//       db.query(
-//         `INSERT INTO attendance (fName, mName, lName, date, status) VALUES (?, ?, ?, ?, ?)`,
-//         [fName, mName, lName, date, 'enroll'],
-//         (attendanceErr,attendanceResults) => {
-//           if (attendanceErr) {
-//             console.log(attendanceErr);
-//             return res.status(500).send('Error adding attendance')
-//           }
-//           res.status(201).json({
-//             id: results.insertId,
-//             lName, fName, mName, suffix, bDay, age, sex, healthHistory,
-//             addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
-//             fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
-//             guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
-//             guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
-//           });
-//         }
-//       );
-//     }
-//   );
-// });
-
-//CREATE NEW ITEM
+// CREATE NEW ITEM and ADD TO ATTANDANCE TABLE
 app.post('/api/users', (req, res) => {
   const {
     lName, fName, mName, suffix, bDay, age, sex, healthHistory,
@@ -99,6 +47,8 @@ app.post('/api/users', (req, res) => {
     guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
     guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
   } = req.body;
+  const yearToday = new Date().getFullYear();
+  const dateToday = new Date().toISOString().split('T')[0];
   db.query(
     `INSERT INTO users (
       lName, fName, mName, suffix, bDay, age, sex, healthHistory,
@@ -119,14 +69,39 @@ app.post('/api/users', (req, res) => {
         console.log(err);
         res.status(500).send('Error adding user');
       } else {
-        res.status(201).json({
-          id: results.insertId,
-          lName, fName, mName, suffix, bDay, age, sex, healthHistory,
-          addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
-          fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
-          guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
-          guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
-        });
+        const studentID = `CDC-${yearToday}${results.insertId.toString().padStart(5, '0')}`;
+        db.query(
+          `UPDATE users SET studentID = ? WHERE id = ?`,
+          [studentID, results.insertId],
+          (updateErr) => {
+            if (updateErr) {
+              console.log(updateErr);
+              res.status(500).send('Error updating studentID');
+            } else {
+              const fullName = `${fName} ${mName} ${lName}`;
+              const date = `${dateToday}`;
+              db.query(
+                `INSERT INTO attendance (schedule, studentID, fullName, status, date) VALUES (?, ?, ?, ?, ?)`,
+                [schedule,studentID,fullName,'Enroll',date],
+                (attendanceErr) => {
+                  if (attendanceErr) {
+                    console.log(attendanceErr);
+                    res.status(500).send('Error adding attendance');
+                  } else {
+                    res.status(201).json({
+                      id: results.insertId,
+                      lName, fName, mName, suffix, bDay, age, sex, healthHistory,
+                      addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
+                      fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
+                      guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
+                      guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID, studentID
+                    });
+                  }
+                }
+              );
+            }
+          }
+        );
       }
     }
   );
@@ -148,6 +123,22 @@ app.get('/api/studentManagement', (req, res) => {
       }
       res.json(results);
     });
+});
+
+//GET item for attendance
+app.get('/api/attendance', (req, res) => {
+  const query = `
+    SELECT 
+      schedule, studentID, fullName, status, date
+    FROM attendance
+  `;
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching students:', err);
+      return res.status(500).send('Error fetching students');
+    }
+    res.json(results);
+  });
 });
 
 //GET item for guardian management

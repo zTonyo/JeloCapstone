@@ -184,7 +184,7 @@ function Announcement({ sidebarOpen }) {
   return (
     <div>
       <div className={`admin-body ${sidebarOpen ? 'without-sidebar' : 'with-sidebar'}`}>
-        <div className='d-flex justify-content-between align-items-center announcement-title'>
+        <div className='d-flex justify-content-between align-items-center teacher-title'>
           <h2>Announcement</h2>
           <button className='btn btn-primary announcement-create-btn' onClick={handleCreateClick}>
             Create New Announcement

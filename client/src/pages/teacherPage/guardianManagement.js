@@ -134,7 +134,7 @@ function GuardianManagement({ sidebarOpen }) {
             </thead>
             <tbody>
               {currentStudents.map((student) => (
-                <tr>
+                <tr key={student.guardianEmail}>
                   <td>{`${student.lName}, ${student.fName} ${student.mName}`}</td>
                   <td>{student.guardianRelationship}</td>
                   <td>{`${student.guardianLName}, ${student.guardianFName} ${student.guardianMName}`}</td>

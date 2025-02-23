@@ -82,7 +82,7 @@ function StudentManagement({ sidebarOpen }) {
             </thead>
             <tbody>
               {currentStudents.map((student) => (
-                <tr>
+                <tr key={student.healthHistory}>
                   <td>{student.lName + student.bDay}</td>
                   <td>{`${student.lName}, ${student.fName} ${student.mName}`}</td>
                   <td>{`${student.guardianLName}, ${student.guardianFName} ${student.guardianMName}`}</td>
@@ -117,11 +117,7 @@ function StudentManagement({ sidebarOpen }) {
               ))}
 
               <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                <button 
-                  className="page-link" 
-                  onClick={() => handlePageChange(currentPage + 1)} 
-                  disabled={currentPage === totalPages}
-                >
+                <button className="page-link" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
                   Next
                 </button>
               </li>
