@@ -5,11 +5,19 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 function Attendance({ sidebarOpen }) {
   const navigate = useNavigate();
-    const [dbAttendance, setDbAttendance] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+  const [dbAttendance, setDbAttendance] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const [date, setDate] = useState('');
+
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    setDate(today);
+    console.log(`${today}`);
+
+  }, []);
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -61,12 +69,14 @@ function Attendance({ sidebarOpen }) {
       <div className={`admin-body ${sidebarOpen ? 'without-sidebar' : 'with-sidebar'}`}>
         <div className='d-flex justify-content-between align-items-center teacher-title'>
           <h2>Attendance</h2>
-          <select type="text" id="schedule">
-            <option value="K1">K1(3y/o) - 8:00AM- 10:00AM</option>
-            <option value="K2">K2(4y/o) - 10:15AM-12:15PM</option>
-            <option value="K3">K3(4y/o) - 1:30PM-3:30PM</option>
-          </select>
-          <input type="date" name="date" />
+          <div className='d-flex justify-content-between'>
+            <select type="text" id="schedule">
+              <option value="K1">K1(3y/o) - 8:00AM- 10:00AM</option>
+              <option value="K2">K2(4y/o) - 10:15AM-12:15PM</option>
+              <option value="K3">K3(4y/o) - 1:30PM-3:30PM</option>
+            </select>
+            <input type="date" name="date" value={date} />
+          </div>
         </div>
         <div className='teacher-div-table'>
           <table className='table table-bordered table-striped table-sm'>
