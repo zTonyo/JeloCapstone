@@ -24,6 +24,7 @@ import Grades from './pages/teacherPage/grades';
 import GuardianDashboard from './pages/guardianPage/dashboard';
 import './App.css';
 import GuardianAnnouncement from './pages/guardianPage/announcement';
+import GuardianSignin from './pages/GuardianSignin';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -61,6 +62,7 @@ function App() {
         <Route path="/teacherlogin" element={<TeacherLogin onLogin={handleLoginTeacher} />} />
         <Route path="/guardianlogin" element={<GuardianLogin onLogin={handleLoginGuardian} />} />
         <Route path="/teachersignin" element={<TeacherSignin />} />
+        <Route path="/guardiansignin" element={<GuardianSignin />} />
 
         <Route path="/teacherdashboard" element={<TeacherDashboard sidebarOpen={sidebarOpen} />} />
         <Route path="/student-management" element={<StudentManagement sidebarOpen={sidebarOpen} />} />

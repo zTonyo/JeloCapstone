@@ -38,6 +38,58 @@ app.get('/api/users', (req, res) => {
   });
 });
 
+// //CREATE NEW ITEM WITH ATTENDANCE
+// app.post('/api/users', (req, res) => {
+//   const {
+//     lName, fName, mName, suffix, bDay, age, sex, healthHistory,
+//     addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
+//     fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
+//     guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
+//     guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
+//   } = req.body;
+//   db.query(
+//     `INSERT INTO users (
+//       lName, fName, mName, suffix, bDay, age, sex, healthHistory,
+//       addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
+//       fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
+//       guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
+//       guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
+//     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+//     [
+//       lName, fName, mName, suffix, bDay, age, sex, healthHistory,
+//       addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
+//       fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
+//       guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
+//       guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
+//     ],
+//     (err, results) => {
+//       if (err) {
+//         console.log(err);
+//         res.status(500).send('Error adding user');
+//       }
+//       const date = new Date().toISOString().split('T')[0];
+//       db.query(
+//         `INSERT INTO attendance (fName, mName, lName, date, status) VALUES (?, ?, ?, ?, ?)`,
+//         [fName, mName, lName, date, 'enroll'],
+//         (attendanceErr,attendanceResults) => {
+//           if (attendanceErr) {
+//             console.log(attendanceErr);
+//             return res.status(500).send('Error adding attendance')
+//           }
+//           res.status(201).json({
+//             id: results.insertId,
+//             lName, fName, mName, suffix, bDay, age, sex, healthHistory,
+//             addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
+//             fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
+//             guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
+//             guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
+//           });
+//         }
+//       );
+//     }
+//   );
+// });
+
 //CREATE NEW ITEM
 app.post('/api/users', (req, res) => {
   const {
