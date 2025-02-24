@@ -10,14 +10,15 @@ function Attendance({ sidebarOpen }) {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const [date, setDate] = useState('');
+  // const [date, setDate] = useState('');
+  const [scheduleFilter, setScheduleFilter] = useState('');
 
-  useEffect(() => {
-    const today = new Date().toISOString().split('T')[0];
-    setDate(today);
-    console.log(`${today}`);
+  // useEffect(() => {
+  //   const today = new Date().toISOString().split('T')[0];
+  //   setDate(today);
+  //   console.log(`${today}`);
 
-  }, []);
+  // }, []);
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -28,41 +29,49 @@ function Attendance({ sidebarOpen }) {
   }, [navigate]);
 
   useEffect(() => {
-      fetch('http://localhost:5000/api/attendance')
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Failed to fetch data');
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setDbAttendance(data);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
-          setError('Failed to load student data');
-          setLoading(false);
-        });
-    }, []);
-  
-    const handlePageChange = (pageNumber) => {
-      setCurrentPage(pageNumber);
-    };
-  
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentStudents = dbAttendance.slice(indexOfFirstItem, indexOfLastItem);
-  
-    const totalPages = Math.ceil(dbAttendance.length / itemsPerPage);
-  
-    if (loading) {
-      return <div>Loading...</div>;
-    }
-  
-    if (error) {
-      return <div>{error}</div>;
-    }
+    fetch('http://localhost:5000/api/attendance')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setDbAttendance(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        setError('Failed to load student data');
+        setLoading(false);
+      });
+  }, []);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleScheduleChange = (event) => {
+    setScheduleFilter(event.target.value);
+    setCurrentPage(1);
+  };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  const filteredAttendance = scheduleFilter
+    ? dbAttendance.filter((student) => student.schedule === scheduleFilter)
+    : dbAttendance;
+  const currentStudents = filteredAttendance.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredAttendance.length / itemsPerPage);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div>
@@ -70,12 +79,13 @@ function Attendance({ sidebarOpen }) {
         <div className='d-flex justify-content-between align-items-center teacher-title'>
           <h2>Attendance</h2>
           <div className='d-flex justify-content-between'>
-            <select type="text" id="schedule">
+            <select type="text" id="schedule" value={scheduleFilter} onChange={handleScheduleChange}>
+              <option value="">All Schedules</option>
               <option value="K1">K1(3y/o) - 8:00AM- 10:00AM</option>
               <option value="K2">K2(4y/o) - 10:15AM-12:15PM</option>
               <option value="K3">K3(4y/o) - 1:30PM-3:30PM</option>
             </select>
-            <input type="date" name="date" value={date} />
+            {/* <input type="date" name="date" value={date} /> */}
           </div>
         </div>
         <div className='teacher-div-table'>
@@ -85,6 +95,7 @@ function Attendance({ sidebarOpen }) {
                 <th scope='col'>Student I.D.</th>
                 <th scope='col'>Student Name</th>
                 <th scope='col'>Status</th>
+                <th scope='col'>Schedule</th>
                 <th scope='col'>Action</th>
               </tr>
             </thead>
@@ -99,6 +110,7 @@ function Attendance({ sidebarOpen }) {
                     <td>{student.studentID}</td>
                     <td>{student.fullName}</td>
                     <td>{student.status}</td>
+                    <td>{student.schedule}</td>
                     {/* <td className="td-btn"><button className="btn-edit-table" onClick={() => handleUpdateClick(student)}><FontAwesomeIcon icon={faPenToSquare} /></button></td> */}
                     <td className="td-btn"><button className="btn-edit-table" ><FontAwesomeIcon icon={faPenToSquare} /></button></td>
                   </tr>
