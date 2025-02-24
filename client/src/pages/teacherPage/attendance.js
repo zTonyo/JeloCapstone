@@ -89,15 +89,21 @@ function Attendance({ sidebarOpen }) {
               </tr>
             </thead>
             <tbody>
-              {currentStudents.map((student) => (
-                <tr key={student.studentID}>
-                  <td>{student.studentID}</td>
-                  <td>{student.fullName}</td>
-                  <td>{student.status}</td>
-                  {/* <td className="td-btn"><button className="btn-edit-table" onClick={() => handleUpdateClick(student)}><FontAwesomeIcon icon={faPenToSquare} /></button></td> */}
-                  <td className="td-btn"><button className="btn-edit-table" ><FontAwesomeIcon icon={faPenToSquare} /></button></td>
+              {currentStudents.length === 0 ? (
+                <tr>
+                  <td colSpan="6" className="text-center">No students available</td>
                 </tr>
-              ))}
+              ) : (
+                currentStudents.map((student) => (
+                  <tr key={student.studentID}>
+                    <td>{student.studentID}</td>
+                    <td>{student.fullName}</td>
+                    <td>{student.status}</td>
+                    {/* <td className="td-btn"><button className="btn-edit-table" onClick={() => handleUpdateClick(student)}><FontAwesomeIcon icon={faPenToSquare} /></button></td> */}
+                    <td className="td-btn"><button className="btn-edit-table" ><FontAwesomeIcon icon={faPenToSquare} /></button></td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
           {/* Pagination Controls */}
@@ -110,17 +116,12 @@ function Attendance({ sidebarOpen }) {
               </li>
               {[...Array(totalPages)].map((_, index) => (
                 <li key={index} 
-                  className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}
-                >
-                  <button 
-                    className="page-link" 
-                    onClick={() => handlePageChange(index + 1)}
-                  >
+                  className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                  <button className="page-link" onClick={() => handlePageChange(index + 1)}>
                     {index + 1}
                   </button>
                 </li>
               ))}
-
               <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
                 <button className="page-link" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
                   Next

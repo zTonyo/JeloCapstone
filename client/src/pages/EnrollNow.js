@@ -66,25 +66,6 @@ const EnrollNow = () => {
       if (response.ok) {
         console.log('User added:', result);
         alert('User successfully added!');
-        // const attendanceResponse = await fetch('http://localhost:5000/api/attendance', {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify({
-        //     fName: formData.fName,
-        //     mName: formData.mName,
-        //     lName: formData.lName,
-        //     date: new Date().toISOString().split('T')[0],
-        //     status: 'enroll',
-        //   }),
-        // });
-        // const attendanceResult = await attendanceResponse.json();
-        // if (attendanceResponse.ok) {
-        //   console.log('Attendance added:', attendanceResult);
-        // } else {
-        //   console.error('Error adding attendance:', attendanceResult);
-        // }
         navigate('/');
         window.scrollTo(0, 0);
       } else {

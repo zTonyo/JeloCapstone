@@ -113,7 +113,7 @@ app.get('/api/studentManagement', (req, res) => {
       SELECT 
         lName, fName, mName, bDay, healthHistory, schedule, 
         guardianLName, guardianFName, guardianMName, psa, 
-        immunizationCard, photo, guardianQCID 
+        immunizationCard, photo, guardianQCID, id
       FROM users
     `;
     db.query(query, (err, results) => {
@@ -146,7 +146,7 @@ app.get('/api/guardianManagement', (req, res) => {
   const query = `
     SELECT 
       lName, fName, mName, guardianContactNo, guardianEmail,
-      guardianLName, guardianFName, guardianMName, 
+      guardianLName, guardianFName, guardianMName, id,
       guardianRelationship
     FROM users
   `;
@@ -196,7 +196,7 @@ app.put('/api/updateGuardian/:fullName', (req, res) => {
 // Multer for file upload
 const announcementStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadPath = '../client/src/assets/announcement';
+    const uploadPath = path.resolve(__dirname, '..', 'client', 'src', 'assets', 'announcement');    
     if (!fs.existsSync(uploadPath)) {
       fs.mkdirSync(uploadPath, { recursive: true });
     }
@@ -212,7 +212,7 @@ const announcementUpload = multer({ storage: announcementStorage });
 // Create new announcement
 app.post('/api/announcement', announcementUpload.single('picture'), (req, res) => {
   const { title, description, dateAndTime } = req.body;
-  const picture = req.file ? '/assets/announcement/' + req.file.filename : null;
+  const picture = req.file ? '/assets/announcement/' + req.file.filename : '';
   const query = `
     INSERT INTO announcement (title, description, dateAndTime, picture)
     VALUES (?, ?, ?, ?)
@@ -229,6 +229,37 @@ app.post('/api/announcement', announcementUpload.single('picture'), (req, res) =
       dateAndTime,
       picture,
     });
+  });
+});
+
+// Update announcement
+app.put('/api/announcement/:id', announcementUpload.single('picture'), (req, res) => {
+  const { id } = req.params;
+  const { title, description, dateAndTime } = req.body;
+  const picture = req.file ? `/assets/announcement/${req.file.filename}` : '';
+  const query = `
+    UPDATE announcement
+    SET title = ?, description = ?, dateAndTime = ?, picture = ?
+    WHERE id = ?
+  `;
+  const queryValues = [title, description, dateAndTime, picture, id];
+  db.query(query, queryValues, (err, results) => {
+    if (err) {
+      console.error('Error updating announcement:', err);
+      return res.status(500).json({ error: 'Failed to update announcement' });
+    }
+    if (results.affectedRows > 0) {
+      res.status(200).json({
+        message: 'Announcement updated successfully',
+        id,
+        title,
+        description,
+        dateAndTime,
+        picture: picture || undefined,
+      });
+    } else {
+      res.status(404).json({ message: 'Announcement not found' });
+    }
   });
 });
 
@@ -263,35 +294,7 @@ app.delete('/api/announcement', (req, res) => {
   });
 });
 
-app.put('/api/announcement/:id', announcementUpload.single('picture'), (req, res) => {
-  const { id } = req.params;
-  const { title, description, dateAndTime } = req.body;
-  const picture = req.file ? '/assets/announcement/' + req.file.filename : null;
-  const query = `
-    UPDATE announcement
-    SET title = ?, description = ?, dateAndTime = ?, picture = ?
-    WHERE id = ?  // Use id as the condition for updating
-  `;
-  db.query(query, [title, description, dateAndTime, picture, id], (err, results) => {
-    if (err) {
-      console.error('Error updating announcement:', err);
-      return res.status(500).json({ error: 'Failed to update announcement' });
-    }
-    if (results.affectedRows > 0) {
-      res.status(200).json({
-        message: 'Announcement updated successfully',
-        id,
-        title,
-        description,
-        dateAndTime,
-        picture,
-      });
-    } else {
-      res.status(404).json({ message: 'Announcement not found' });
-    }
-  });
-});
-
+//Get announcement for guardian
 app.get('/api/announcement', (req, res) => {
   db.query('SELECT title, description, dataAndTime, picture FROM announcements', (err, results) => {
     if (err) {
