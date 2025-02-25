@@ -96,7 +96,7 @@ function Announcement({ sidebarOpen }) {
     try {
       if (editingAnnouncement) {
         const response = await fetch(
-          `http://localhost:5000/api/announcement/:id`,
+          `http://localhost:5000/api/announcement/${editingAnnouncement.id}`,
           {
             method: 'PUT',
             body: data,
@@ -184,7 +184,7 @@ function Announcement({ sidebarOpen }) {
   return (
     <div>
       <div className={`admin-body ${sidebarOpen ? 'without-sidebar' : 'with-sidebar'}`}>
-        <div className='d-flex justify-content-between align-items-center announcement-title'>
+        <div className='d-flex justify-content-between align-items-center teacher-title'>
           <h2>Announcement</h2>
           <button className='btn btn-primary announcement-create-btn' onClick={handleCreateClick}>
             Create New Announcement
@@ -209,7 +209,7 @@ function Announcement({ sidebarOpen }) {
                     <td className='announcement-tbl-center'>{announcement.description}</td>
                     <td className='announcement-tbl-center'>{announcement.dateAndTime}</td>
                     <td className='announcement-tbl-center'>{announcement.picture && <img src={`http://localhost:5000${announcement.picture}`} alt="announcement" style={{ width: '80px' }} />}</td>
-                    <td className="announcement-tbl-center td-btn">
+                    <td className="announcement-tbl-center">
                       <button className="btn-edit-table" onClick={() => handleEdit(announcement)}>
                         <FontAwesomeIcon icon={faPenToSquare} />
                       </button>

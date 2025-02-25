@@ -79,10 +79,10 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
             <FontAwesomeIcon icon={faBullhorn} />
             <NavLink to="/announcement" className="nav-link side-link">Announcement</NavLink>
           </li>
-          {/* <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/attendance' ? 'active' : ''}`}>
+          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/attendance' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faClipboardUser} />
             <NavLink to="/attendance" className="nav-link side-link">Attendance</NavLink>
-          </li> */}
+          </li>
           {/* <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/grade' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faNewspaper} />
             <NavLink to="/grades" className="nav-link side-link">Grades</NavLink>

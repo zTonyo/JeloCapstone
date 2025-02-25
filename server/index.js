@@ -38,59 +38,7 @@ app.get('/api/users', (req, res) => {
   });
 });
 
-// //CREATE NEW ITEM WITH ATTENDANCE
-// app.post('/api/users', (req, res) => {
-//   const {
-//     lName, fName, mName, suffix, bDay, age, sex, healthHistory,
-//     addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
-//     fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
-//     guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
-//     guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
-//   } = req.body;
-//   db.query(
-//     `INSERT INTO users (
-//       lName, fName, mName, suffix, bDay, age, sex, healthHistory,
-//       addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
-//       fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
-//       guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
-//       guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
-//     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-//     [
-//       lName, fName, mName, suffix, bDay, age, sex, healthHistory,
-//       addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
-//       fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
-//       guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
-//       guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
-//     ],
-//     (err, results) => {
-//       if (err) {
-//         console.log(err);
-//         res.status(500).send('Error adding user');
-//       }
-//       const date = new Date().toISOString().split('T')[0];
-//       db.query(
-//         `INSERT INTO attendance (fName, mName, lName, date, status) VALUES (?, ?, ?, ?, ?)`,
-//         [fName, mName, lName, date, 'enroll'],
-//         (attendanceErr,attendanceResults) => {
-//           if (attendanceErr) {
-//             console.log(attendanceErr);
-//             return res.status(500).send('Error adding attendance')
-//           }
-//           res.status(201).json({
-//             id: results.insertId,
-//             lName, fName, mName, suffix, bDay, age, sex, healthHistory,
-//             addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
-//             fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
-//             guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
-//             guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
-//           });
-//         }
-//       );
-//     }
-//   );
-// });
-
-//CREATE NEW ITEM
+// CREATE NEW ITEM and ADD TO ATTANDANCE TABLE
 app.post('/api/users', (req, res) => {
   const {
     lName, fName, mName, suffix, bDay, age, sex, healthHistory,
@@ -99,6 +47,8 @@ app.post('/api/users', (req, res) => {
     guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
     guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
   } = req.body;
+  const yearToday = new Date().getFullYear();
+  const dateToday = new Date().toISOString().split('T')[0];
   db.query(
     `INSERT INTO users (
       lName, fName, mName, suffix, bDay, age, sex, healthHistory,
@@ -119,14 +69,39 @@ app.post('/api/users', (req, res) => {
         console.log(err);
         res.status(500).send('Error adding user');
       } else {
-        res.status(201).json({
-          id: results.insertId,
-          lName, fName, mName, suffix, bDay, age, sex, healthHistory,
-          addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
-          fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
-          guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
-          guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID
-        });
+        const studentID = `CDC-${yearToday}${results.insertId.toString().padStart(5, '0')}`;
+        db.query(
+          `UPDATE users SET studentID = ? WHERE id = ?`,
+          [studentID, results.insertId],
+          (updateErr) => {
+            if (updateErr) {
+              console.log(updateErr);
+              res.status(500).send('Error updating studentID');
+            } else {
+              const fullName = `${fName} ${mName} ${lName}`;
+              const date = `${dateToday}`;
+              db.query(
+                `INSERT INTO attendance (schedule, studentID, fullName, status, date) VALUES (?, ?, ?, ?, ?)`,
+                [schedule,studentID,fullName,'Enroll',date],
+                (attendanceErr) => {
+                  if (attendanceErr) {
+                    console.log(attendanceErr);
+                    res.status(500).send('Error adding attendance');
+                  } else {
+                    res.status(201).json({
+                      id: results.insertId,
+                      lName, fName, mName, suffix, bDay, age, sex, healthHistory,
+                      addressNumber, brgy, municipality, fatherLName, fatherFName, fatherMName,
+                      fatherContactNo, motherLName, motherFName, motherMName, motherContactNo,
+                      guardianLName, guardianFName, guardianMName, guardianContactNo, guardianRelationship,
+                      guardianEmail, guardianOccupation, schedule, psa, immunizationCard, photo, guardianQCID, studentID
+                    });
+                  }
+                }
+              );
+            }
+          }
+        );
       }
     }
   );
@@ -138,7 +113,7 @@ app.get('/api/studentManagement', (req, res) => {
       SELECT 
         lName, fName, mName, bDay, healthHistory, schedule, 
         guardianLName, guardianFName, guardianMName, psa, 
-        immunizationCard, photo, guardianQCID 
+        immunizationCard, photo, guardianQCID, id
       FROM users
     `;
     db.query(query, (err, results) => {
@@ -150,12 +125,28 @@ app.get('/api/studentManagement', (req, res) => {
     });
 });
 
+//GET item for attendance
+app.get('/api/attendance', (req, res) => {
+  const query = `
+    SELECT 
+      schedule, studentID, fullName, status, date
+    FROM attendance
+  `;
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching students:', err);
+      return res.status(500).send('Error fetching students');
+    }
+    res.json(results);
+  });
+});
+
 //GET item for guardian management
 app.get('/api/guardianManagement', (req, res) => {
   const query = `
     SELECT 
       lName, fName, mName, guardianContactNo, guardianEmail,
-      guardianLName, guardianFName, guardianMName, 
+      guardianLName, guardianFName, guardianMName, id,
       guardianRelationship
     FROM users
   `;
@@ -205,7 +196,7 @@ app.put('/api/updateGuardian/:fullName', (req, res) => {
 // Multer for file upload
 const announcementStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadPath = '../client/src/assets/announcement';
+    const uploadPath = path.resolve(__dirname, '..', 'client', 'src', 'assets', 'announcement');    
     if (!fs.existsSync(uploadPath)) {
       fs.mkdirSync(uploadPath, { recursive: true });
     }
@@ -221,7 +212,7 @@ const announcementUpload = multer({ storage: announcementStorage });
 // Create new announcement
 app.post('/api/announcement', announcementUpload.single('picture'), (req, res) => {
   const { title, description, dateAndTime } = req.body;
-  const picture = req.file ? '/assets/announcement/' + req.file.filename : null;
+  const picture = req.file ? '/assets/announcement/' + req.file.filename : '';
   const query = `
     INSERT INTO announcement (title, description, dateAndTime, picture)
     VALUES (?, ?, ?, ?)
@@ -238,6 +229,37 @@ app.post('/api/announcement', announcementUpload.single('picture'), (req, res) =
       dateAndTime,
       picture,
     });
+  });
+});
+
+// Update announcement
+app.put('/api/announcement/:id', announcementUpload.single('picture'), (req, res) => {
+  const { id } = req.params;
+  const { title, description, dateAndTime } = req.body;
+  const picture = req.file ? `/assets/announcement/${req.file.filename}` : '';
+  const query = `
+    UPDATE announcement
+    SET title = ?, description = ?, dateAndTime = ?, picture = ?
+    WHERE id = ?
+  `;
+  const queryValues = [title, description, dateAndTime, picture, id];
+  db.query(query, queryValues, (err, results) => {
+    if (err) {
+      console.error('Error updating announcement:', err);
+      return res.status(500).json({ error: 'Failed to update announcement' });
+    }
+    if (results.affectedRows > 0) {
+      res.status(200).json({
+        message: 'Announcement updated successfully',
+        id,
+        title,
+        description,
+        dateAndTime,
+        picture: picture || undefined,
+      });
+    } else {
+      res.status(404).json({ message: 'Announcement not found' });
+    }
   });
 });
 
@@ -272,35 +294,7 @@ app.delete('/api/announcement', (req, res) => {
   });
 });
 
-app.put('/api/announcement/:id', announcementUpload.single('picture'), (req, res) => {
-  const { id } = req.params;
-  const { title, description, dateAndTime } = req.body;
-  const picture = req.file ? '/assets/announcement/' + req.file.filename : null;
-  const query = `
-    UPDATE announcement
-    SET title = ?, description = ?, dateAndTime = ?, picture = ?
-    WHERE id = ?  // Use id as the condition for updating
-  `;
-  db.query(query, [title, description, dateAndTime, picture, id], (err, results) => {
-    if (err) {
-      console.error('Error updating announcement:', err);
-      return res.status(500).json({ error: 'Failed to update announcement' });
-    }
-    if (results.affectedRows > 0) {
-      res.status(200).json({
-        message: 'Announcement updated successfully',
-        id,
-        title,
-        description,
-        dateAndTime,
-        picture,
-      });
-    } else {
-      res.status(404).json({ message: 'Announcement not found' });
-    }
-  });
-});
-
+//Get announcement for guardian
 app.get('/api/announcement', (req, res) => {
   db.query('SELECT title, description, dataAndTime, picture FROM announcements', (err, results) => {
     if (err) {
