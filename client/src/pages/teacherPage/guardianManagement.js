@@ -215,11 +215,11 @@ function GuardianManagement({ sidebarOpen }) {
                   </div>
                   <div className="form-group">
                     <label htmlFor="guardianContactNo">Contact Number</label>
-                    <input disabled type="text" className="form-control" id="guardianContactNo" value={selectedStudent.guardianContactNo} onChange={handleInputChange} />
+                    <input type="text" className="form-control" id="guardianContactNo" value={selectedStudent.guardianContactNo} onChange={handleInputChange} />
                   </div>
                   <div className="form-group">
                     <label htmlFor="guardianEmail">Email</label>
-                    <input disabled type="email" className="form-control" id="guardianEmail" value={selectedStudent.guardianEmail} onChange={handleInputChange} />
+                    <input type="email" className="form-control" id="guardianEmail" value={selectedStudent.guardianEmail} onChange={handleInputChange} />
                   </div>
                   <button type="submit" className="btn btn-primary">Save Changes</button>
                 </form>

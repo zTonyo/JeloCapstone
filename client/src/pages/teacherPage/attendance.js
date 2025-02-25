@@ -10,7 +10,7 @@ function Attendance({ sidebarOpen }) {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  // const [date, setDate] = useState('');
+  const [date, setDate] = useState('');
   const [scheduleFilter, setScheduleFilter] = useState('');
 
   // useEffect(() => {
@@ -85,7 +85,7 @@ function Attendance({ sidebarOpen }) {
               <option value="K2">K2(4y/o) - 10:15AM-12:15PM</option>
               <option value="K3">K3(4y/o) - 1:30PM-3:30PM</option>
             </select>
-            {/* <input type="date" name="date" value={date} /> */}
+            <input type="date" name="date" value={date} />
           </div>
         </div>
         <div className='teacher-div-table'>
