@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
@@ -5,27 +7,41 @@ const multer = require('multer');
 const fs = require('fs')
 const path = require('path');
 
+// Database configuration
+const db = require('./config/db');
+
+// Teacher Routes
+const teacherRoutes = require('./routes/teacherRoutes');
+
 const app = express();
-const port = 5000;
+const port = process.env.PORT;
 
 app.use(cors());
 app.use(express.json());
 
-// MySQL Connection
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'Test101',
-  database: 'cdcmsDatabase'
-});
 
-db.connect((err) => {
-  if (err) {
-    console.error('Database connection failed:', err);
-  } else {
-  console.log('Connected to MySQL database!');
-  }
-});
+// For Teachers Only
+app.use('/api', teacherRoutes);
+
+
+// End
+
+
+// MySQL Connection
+// const db = mysql.createConnection({
+//   host: process.env.HOST,
+//   user: process.env.USER,
+//   password: process.env.PASSWORD,
+//   database: process.env.DATABASENAME
+// });
+
+// db.connect((err) => {
+//   if (err) {
+//     console.error('Database connection failed:', err);
+//   } else {
+//   console.log('Connected to MySQL database!');
+//   }
+// });
 
 //GET ALL ITEM
 app.get('/api/users', (req, res) => {
