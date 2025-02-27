@@ -12,58 +12,142 @@ To create and select the database for use, execute the following SQL commands:
 ```
 
 ### 2. Table Creation
-The following SQL commands will create two tables: `users` and `announcement`.
-* **Creating the `users` table**
-    * This table will store information about individuals, including personal details, family information, and health-related data.
+The following SQL commands will create tables for the CDCMS Database.
 ```
-    CREATE TABLE users (
-    	id INT AUTO_INCREMENT PRIMARY KEY,
-    	lName VARCHAR(100),
-    	fName VARCHAR(100),
-    	mName VARCHAR(100),
-    	suffix VARCHAR(100),
-    	bDay VARCHAR(100),
-    	age VARCHAR(10),
-    	sex VARCHAR(50),
-    	healthHistory VARCHAR(100),
-    	addressNumber VARCHAR(100),
-    	brgy VARCHAR(100),
-    	municipality VARCHAR(100),
-    	fatherLName VARCHAR(100),
-    	fatherFName VARCHAR(100),
-    	fatherMName VARCHAR(100),
-    	fatherContactNo VARCHAR(50),
-    	motherLName VARCHAR(100),
-    	motherFName VARCHAR(100),
-    	motherMName VARCHAR(100),
-    	motherContactNo VARCHAR(50),
-    	guardianLName VARCHAR(100),
-    	guardianFName VARCHAR(100),
-    	guardianMName VARCHAR(100),
-    	guardianContactNo VARCHAR(50),
-    	guardianRelationship VARCHAR(100),
-    	guardianEmail VARCHAR(100),
-    	guardianOccupation VARCHAR(100),
-    	schedule VARCHAR(100),
-    	psa VARCHAR(200),
-    	immunizationCard VARCHAR(200),
-    	photo VARCHAR(200),
-    	guardianQCID VARCHAR(200)
-    );
-```
-* **Creating the `announcement` table**
-    * This table will store announcements, including images, titles, dates, and descriptions.
-```
-    CREATE TABLE announcement (
-    	id INT AUTO_INCREMENT PRIMARY KEY,
-    	picture VARCHAR(200),
-    	title VARCHAR(200),
-    	dateAndTime VARCHAR(50),
-    	description TEXT
-    );
-```
+		-- Table: user_credential
+	CREATE TABLE user_credential (
+		user_id INT PRIMARY KEY AUTO_INCREMENT,
+		email VARCHAR(255) NOT NULL UNIQUE,
+		password VARCHAR(255) NOT NULL,
+		user_role ENUM('teacher', 'staff', 'volunteer', 'guardian') NOT NULL,
+		isActive BOOLEAN DEFAULT FALSE,
+		confirmationToken VARCHAR(255)
+	);
 
-### 3. Additional Notes
+	-- Table: guardian_credential
+	CREATE TABLE guardian_credential (
+		id INT PRIMARY KEY AUTO_INCREMENT,
+		email VARCHAR(255) NOT NULL UNIQUE,
+		password VARCHAR(255) NOT NULL
+	);
+
+	-- Table: guardian
+	CREATE TABLE guardian (
+		guardianID INT PRIMARY KEY AUTO_INCREMENT,
+		id INT NOT NULL,
+		fullname VARCHAR(255) NOT NULL,
+		birthday DATETIME NOT NULL,
+		age INT NOT NULL,
+		gender VARCHAR(10) NOT NULL,
+		address VARCHAR(255) NOT NULL,
+		FOREIGN KEY (id) REFERENCES guardian_credential(id) ON DELETE CASCADE
+	);
+
+	-- Table: student
+	CREATE TABLE student (
+		studentKey INT PRIMARY KEY AUTO_INCREMENT,
+		studentID INT NOT NULL UNIQUE,
+		user_id INT NOT NULL,
+		guardianID INT NOT NULL,
+		firstName VARCHAR(100) NOT NULL,
+		middleName VARCHAR(100),
+		lastName VARCHAR(100) NOT NULL,
+		suffix VARCHAR(10),
+		birthdate DATE NOT NULL,
+		age INT NOT NULL,
+		sex VARCHAR(10) NOT NULL,
+		healthHistory TEXT,
+		FOREIGN KEY (user_id) REFERENCES user_credential(user_id) ON DELETE CASCADE,
+		FOREIGN KEY (guardianID) REFERENCES guardian(guardianID) ON DELETE CASCADE
+	);
+
+	-- Table: student_address
+	CREATE TABLE student_address (
+		id INT PRIMARY KEY AUTO_INCREMENT,
+		studentKey INT NOT NULL,
+		address_no INT NOT NULL,
+		baranggay VARCHAR(100) NOT NULL,
+		municipality VARCHAR(100) NOT NULL,
+		FOREIGN KEY (studentKey) REFERENCES student(studentKey) ON DELETE CASCADE
+	);
+
+	-- Table: father_info
+	CREATE TABLE father_info (
+		id INT PRIMARY KEY AUTO_INCREMENT,
+		studentKey INT NOT NULL,
+		firstName VARCHAR(100) NOT NULL,
+		middleName VARCHAR(100),
+		lastName VARCHAR(100) NOT NULL,
+		contact_number VARCHAR(15) NOT NULL,
+		FOREIGN KEY (studentKey) REFERENCES student(studentKey) ON DELETE CASCADE
+	);
+
+	-- Table: mother_info
+	CREATE TABLE mother_info (
+		id INT PRIMARY KEY AUTO_INCREMENT,
+		studentKey INT NOT NULL,
+		firstName VARCHAR(100) NOT NULL,
+		middleName VARCHAR(100),
+		lastName VARCHAR(100) NOT NULL,
+		contact_number VARCHAR(15) NOT NULL,
+		FOREIGN KEY (studentKey) REFERENCES student(studentKey) ON DELETE CASCADE
+	);
+
+	-- Table: guardian_info
+	CREATE TABLE guardian_info (
+		id INT PRIMARY KEY AUTO_INCREMENT,
+		studentKey INT NOT NULL,
+		firstName VARCHAR(100) NOT NULL,
+		middleName VARCHAR(100),
+		lastName VARCHAR(100) NOT NULL,
+		contact_number VARCHAR(15) NOT NULL,
+		FOREIGN KEY (studentKey) REFERENCES student(studentKey) ON DELETE CASCADE
+	);
+
+	-- Table: enrollment
+	CREATE TABLE enrollment (
+		id INT PRIMARY KEY,
+		studentID INT NOT NULL,
+		schedule DATETIME NOT NULL,
+		psa VARCHAR(255) NOT NULL,
+		immunizationCard VARCHAR(255) NOT NULL,
+		recentPhoto VARCHAR(255) NOT NULL,
+		guardianQCID VARCHAR(255) NOT NULL,
+		FOREIGN KEY (studentID) REFERENCES student(studentID) ON DELETE CASCADE
+	);
+
+	-- Table: user_info
+	CREATE TABLE user_info (
+		id INT PRIMARY KEY AUTO_INCREMENT,
+		user_id INT NOT NULL,
+		fullname VARCHAR(255) NOT NULL,
+		birthday DATETIME DEFAULT NULL,
+		age INT DEFAULT NULL,
+		gender VARCHAR(10) DEFAULT NULL,
+		address VARCHAR(255) DEFAULT NULL,
+		FOREIGN KEY (user_id) REFERENCES user_credential(user_id) ON DELETE CASCADE
+	);
+
+	-- Table: announcement
+	CREATE TABLE announcement (
+		id INT PRIMARY KEY AUTO_INCREMENT,
+		user_id INT NOT NULL,
+		picture VARCHAR(255),
+		title VARCHAR(255),
+		upload_date DATETIME NOT NULL,
+		description TEXT NOT NULL,
+		FOREIGN KEY (user_id) REFERENCES user_credential(user_id) ON DELETE CASCADE
+	);
+
+	-- Table: attendance
+	CREATE TABLE attendance (
+		id INT PRIMARY KEY AUTO_INCREMENT,
+		studentID INT NOT NULL,
+		status VARCHAR(50) NOT NULL,
+		FOREIGN KEY (studentID) REFERENCES student(studentID) ON DELETE CASCADE
+	);
+```
+### 2. Additional Notes
 * Ensure that the database and tables are created in the correct environment before inserting any data.
 * The data types (e.g., `VARCHAR(100)`, `TEXT`) can be adjusted depending on the expected length and format of your data.
 * You may also want to consider adding `NOT NULL` constraints or unique keys based on your specific use case.
