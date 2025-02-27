@@ -84,6 +84,8 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
             <NavLink to="/attendance" className="nav-link side-link">Attendance</NavLink>
           </li>
           <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/grade' ? 'active' : ''}`}>
+          </li>
+          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/grade' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faNewspaper} />
             <NavLink to="/grades" className="nav-link side-link">Grades</NavLink>
           </li>

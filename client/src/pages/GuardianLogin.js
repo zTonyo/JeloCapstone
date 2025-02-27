@@ -55,10 +55,10 @@ const GuardianLogin = ({ onLogin }) => {
             Login
           </button>
         </form>
-        <div className="p-2 text-center text-link">
+        {/* <div className="p-2 text-center text-link">
           Don’t Have An Account?{' '}
           <Link to="/guardiansignin">Click Here</Link>
-        </div>
+        </div> */}
       </div>
     </div>
   );

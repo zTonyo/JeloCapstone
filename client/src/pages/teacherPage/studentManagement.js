@@ -55,6 +55,10 @@ function StudentManagement({ sidebarOpen }) {
 
   const totalPages = Math.ceil(dbStudentManagement.length / itemsPerPage);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [dbStudentManagement]);
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -81,52 +85,48 @@ function StudentManagement({ sidebarOpen }) {
               </tr>
             </thead>
             <tbody>
-              {currentStudents.map((student) => (
+              {currentStudents.length === 0 ? (
                 <tr>
-                  <td>{student.lName + student.bDay}</td>
-                  <td>{`${student.lName}, ${student.fName} ${student.mName}`}</td>
-                  <td>{`${student.guardianLName}, ${student.guardianFName} ${student.guardianMName}`}</td>
-                  <td>{student.healthHistory}</td>
-                  <td>{student.schedule}</td>
-                  <td>
-                    {checkRequirements(student).join(', ')}
-                  </td>
+                  <td colSpan="6" className="text-center">No students available</td>
                 </tr>
-              ))}
+              ) : (
+                currentStudents.map((student) => (
+                  <tr key={student.id}>
+                    <td>{`CDC-${new Date().getFullYear()}${String(student.id).padStart(5, '0')}`}</td>
+                    <td>{`${student.lName}, ${student.fName} ${student.mName}`}</td>
+                    <td>{`${student.guardianLName}, ${student.guardianFName} ${student.guardianMName}`}</td>
+                    <td>{student.healthHistory}</td>
+                    <td>{student.schedule}</td>
+                    <td>{checkRequirements(student).join(', ')}</td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
           {/* Pagination Controls */}
-          <div className="pagination-container">
-            <ul className="pagination justify-content-center pagination-content">
-              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                <button className="page-link" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-                  Previous
-                </button>
-              </li>
-              {[...Array(totalPages)].map((_, index) => (
-                <li key={index} 
-                  className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}
-                >
-                  <button 
-                    className="page-link" 
-                    onClick={() => handlePageChange(index + 1)}
-                  >
-                    {index + 1}
+          {totalPages > 1 && (
+            <div className="pagination-container">
+              <ul className="pagination justify-content-center pagination-content">
+                <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                  <button className="page-link" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                    Previous
                   </button>
                 </li>
-              ))}
-
-              <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                <button 
-                  className="page-link" 
-                  onClick={() => handlePageChange(currentPage + 1)} 
-                  disabled={currentPage === totalPages}
-                >
-                  Next
-                </button>
-              </li>
-            </ul>
-          </div>
+                {[...Array(totalPages)].map((_, index) => (
+                  <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                    <button className="page-link" onClick={() => handlePageChange(index + 1)}>
+                      {index + 1}
+                    </button>
+                  </li>
+                ))}
+                <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                  <button className="page-link" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+                    Next
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </div>

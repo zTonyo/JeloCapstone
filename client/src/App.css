@@ -688,7 +688,7 @@ a.nav-link {
   border: none;
   color: #fff;
   background-color: #2A5A7F;
-  font-size: 20px;
+  font-size: 15px;
   padding: 0px 5px;
 }
 
@@ -696,7 +696,7 @@ a.nav-link {
   border: none;
   color: #fff;
   background-color: rgb(220, 0, 0);
-  font-size: 20px;
+  font-size: 15px;
   padding: 0px 5px;
 }
 
@@ -707,7 +707,7 @@ a.nav-link {
 }
 
 /* teacher announcement page */
-.announcement-title {
+.teacher-title {
   margin-right: 50px;
 }
 
