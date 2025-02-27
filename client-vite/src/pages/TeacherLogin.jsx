@@ -3,6 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import mainCDC from '../assets/cropMainCDC.png';
 import logo from '../assets/logo.png';
 
+const serverPath = import.meta.env.VITE_BASE_PATH;
+
+
 const TeacherLogin = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
