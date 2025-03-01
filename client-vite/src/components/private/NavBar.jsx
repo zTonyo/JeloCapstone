@@ -3,10 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGauge } from '@fortawesome/free-solid-svg-icons'
 // import { faGauge } from '@awesome.me/1319f50b7a/icons/sharp/regular';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGaugeHigh, faGraduationCap, faPeopleRoof, faPersonChalkboard, faBullhorn, faClipboardUser, faNewspaper, faRobot } from '@fortawesome/free-solid-svg-icons';
+import { faGauge, faGraduationCap, faPeopleRoof, faPersonChalkboard, faBullhorn, faClipboardUser, faNewspaper, faRobot } from '@fortawesome/free-solid-svg-icons';
 
 const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
   const navigate = useNavigate();

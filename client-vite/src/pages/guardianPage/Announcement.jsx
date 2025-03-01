@@ -41,7 +41,9 @@ function GuardianAnnouncement({ sidebarOpen }) {
             </div>
           ))
         ) : (
-          <p>No announcements available</p> 
+          <div className='d-flex justify-content-center'>
+            <p>No announcements available...</p> 
+          </div>
         )}
       </div>
     </div>
