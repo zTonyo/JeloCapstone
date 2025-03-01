@@ -2,6 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+
+const serverPath = import.meta.env.VITE_BASE_PATH;
+
+const formatDate = (dateObj) => {
+  const year = dateObj.getFullYear();
+  const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const day = String(dateObj.getDate()).padStart(2, '0');
+  const hours = String(dateObj.getHours()).padStart(2, '0');
+  const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+  const seconds = String(dateObj.getSeconds()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
 
 function Announcement({ sidebarOpen }) {
   const navigate = useNavigate();
@@ -23,12 +37,10 @@ function Announcement({ sidebarOpen }) {
   useEffect(() => {
     const fetchAnnouncements = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/announcement');
-        if (!response.ok) {
-          throw new Error('Error fetching announcements');
-        }
-        const data = await response.json();
-        setAnnouncements(data);
+        const response = await axios.get(`${serverPath}/announcement/get`, {
+          withCredentials: true,
+        });
+        setAnnouncements(response.data);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -39,10 +51,7 @@ function Announcement({ sidebarOpen }) {
     fetchAnnouncements();
   }, []);
 
-  const handleCreateClick = () => {
-    setIsModalOpen(true);
-    
-  };
+  const handleCreateClick = () => setIsModalOpen(true);;
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -78,49 +87,36 @@ function Announcement({ sidebarOpen }) {
     e.preventDefault();
     // Combine date and time to format it as "MMM dd, yyyy hh:mm"
     const dateObj = new Date(`${formData.date} ${formData.time}`);
-    const formattedDate = dateObj.toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true,
-    }).replace(',', '');
+    const formattedDate = formatDate(dateObj);
     const data = new FormData();
     data.append('title', formData.title);
     data.append('description', formData.description);
     data.append('dateAndTime', formattedDate);
+    console.log(formattedDate);
     if (formData.picture) {
-      data.append('picture', formData.picture);
+      data.append('image', formData.picture);
     }
     try {
       if (editingAnnouncement) {
-        const response = await fetch(
-          `http://localhost:5000/api/announcement/:id`,
-          {
-            method: 'PUT',
-            body: data,
-          }
+        // Update existing announcement
+        const response = await axios.put(
+          `${serverPath}/announcement/update/${editingAnnouncement.id}`,
+          data,
+          { withCredentials: true }
         );
-        if (!response.ok) {
-          throw new Error('Error updating announcement');
-        }
-        const updatedAnnouncement = await response.json();
         setAnnouncements((prevAnnouncements) =>
           prevAnnouncements.map((announcement) =>
-            announcement.description === updatedAnnouncement.description ? updatedAnnouncement : announcement
+            announcement.id === editingAnnouncement.id ? response.data : announcement
           )
         );
       } else {
-        const response = await fetch('http://localhost:5000/api/announcement', {
-          method: 'POST',
-          body: data,
-        });
-        if (!response.ok) {
-          throw new Error('Error creating announcement');
-        }
-        const newAnnouncement = await response.json();
-        setAnnouncements((prevAnnouncements) => [...prevAnnouncements, newAnnouncement]);
+        // Create new announcement
+        const response = await axios.post(
+          `${serverPath}/announcement/create`,
+          data,
+          { withCredentials: true }
+        );
+        setAnnouncements((prevAnnouncements) => [...prevAnnouncements, response.data]);
       }
       handleCloseModal();
     } catch (error) {
@@ -131,22 +127,14 @@ function Announcement({ sidebarOpen }) {
   // Delete announcement
   const handleDelete = async (announcementDescription) => {
     const isConfirmed = window.confirm('Are you sure you want to delete this announcement?');
-    if (!isConfirmed) {
-      return;
-    }
+    if (!isConfirmed) return;
+
     try {
-      const response = await fetch('http://localhost:5000/api/announcement', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ description: announcementDescription }),
+      await axios.delete(`${serverPath}/announcement/delete/${id}`, {
+        withCredentials: true,
       });
-      if (!response.ok) {
-        throw new Error('Error deleting announcement');
-      }
-      setAnnouncements(prevAnnouncements =>
-        prevAnnouncements.filter(announcement => announcement.description !== announcementDescription)
+      setAnnouncements((prevAnnouncements) =>
+        prevAnnouncements.filter((announcement) => announcement.id !== id)
       );
     } catch (error) {
       console.error('Error deleting announcement:', error);
@@ -160,7 +148,7 @@ function Announcement({ sidebarOpen }) {
       description: announcement.description,
       date: announcement.dateAndTime.split(', ')[0],
       time: announcement.dateAndTime.split(', ')[1],
-      picture: announcement.picture,
+      picture: announcement.image,
     });
     setIsModalOpen(true);
   };
@@ -204,10 +192,10 @@ function Announcement({ sidebarOpen }) {
             <tbody>
               {announcements.length > 0 ? (
                 announcements.map((announcement) => (
-                  <tr key={announcement.dateAndTime}>
+                  <tr key={announcement.upload_date}>
                     <td className='announcement-tbl-center'>{announcement.title}</td>
                     <td className='announcement-tbl-center'>{announcement.description}</td>
-                    <td className='announcement-tbl-center'>{announcement.dateAndTime}</td>
+                    <td className='announcement-tbl-center'>{announcement.upload_date}</td>
                     <td className='announcement-tbl-center'>{announcement.picture && <img src={`http://localhost:5000${announcement.picture}`} alt="announcement" style={{ width: '80px' }} />}</td>
                     <td className="announcement-tbl-center td-btn">
                       <button className="btn-edit-table" onClick={() => handleEdit(announcement)}>
@@ -244,8 +232,8 @@ function Announcement({ sidebarOpen }) {
                 <textarea className='form-control form-control-sm' id="description" rows="3" name="description" value={formData.description} onChange={handleInputChange} required />
               </div>
               <div className="form-group">
-                <label htmlFor="picture">Picture</label>
-                <input type="file" className='form-control form-control-sm' id="picture" name="picture" accept="image/*" onChange={handleFileChange} />
+                <label htmlFor="image">Picture</label>
+                <input type="file" className='form-control form-control-sm' id="image" name="image" accept="image/*" onChange={handleFileChange} />
                 {/* {formData.picture && (
                   <img src={URL.createObjectURL(formData.picture)} alt="Preview" style={{ width: '100px', marginTop: '5px' }} />
                 )} */}
@@ -257,9 +245,9 @@ function Announcement({ sidebarOpen }) {
                   <input type="time" className='form-control form-control-sm' id="time" name="time" value={formData.time} onChange={handleInputChange} required />
                 </div>
               </div>
-              <div className="form-actions d-flex justify-content-between">
-                <button type="submit" className="btn btn-primary">Submit</button>
-                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Cancel</button>
+              <div className="form-actions d-flex justify-content-between flex-column gap-2">
+                <button type="submit" className="btn btn-primary ">Submit</button>
+                <button type="button" className="btn btn-secondary px-3" onClick={handleCloseModal}>Cancel</button>
               </div>
             </form>
           </div>

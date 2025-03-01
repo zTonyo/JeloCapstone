@@ -4,22 +4,27 @@ import { NavLink } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGauge } from '@fortawesome/free-solid-svg-icons'
-// import { faGauge } from '@awesome.me/1319f50b7a/icons/sharp/regular';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGaugeHigh, faGraduationCap, faPeopleRoof, faPersonChalkboard, faBullhorn, faClipboardUser, faNewspaper, faRobot } from '@fortawesome/free-solid-svg-icons';
+import { faPowerOff, faGraduationCap, faPeopleRoof, faPersonChalkboard, faBullhorn, faClipboardUser, faNewspaper, faRobot } from '@fortawesome/free-solid-svg-icons';
+
+const serverPath = import.meta.env.VITE_BASE_PATH;
 
 const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
   const navigate = useNavigate();
+  const profilePicture = localStorage.getItem("profilePicture");
 
   const toggleOffcanvas = () => {
     setSidebarOpen(!sidebarOpen);
   };
   
   const handleLogClick = () => {
-    localStorage.setItem("isLoggedIn", "false");
-    navigate('/');
-    window.location.reload();
+    navigate('/profile');
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("profilePicture");
+    navigate('/about');
+  }
 
   return (
     <div className='wrapper'>
@@ -33,7 +38,10 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
         
         <button className="btn-none" onClick={handleLogClick}>
           <span className="avatar">
-            <div className="avatar-img avatar-initials-min"></div>
+            {/* <img className='' src={`../../../${profilePicture}`} alt="" /> */}
+            <div className="avatar-img avatar-initials-min">
+              <img src={`${serverPath}${profilePicture}`} alt="" />
+            </div>
           </span>
         </button>
       </nav>
@@ -93,6 +101,10 @@ const NavBar = ({ sidebarOpen, setSidebarOpen }) => {
           <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/ai-record' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faRobot} />
             <NavLink to="/ai-record" className="nav-link side-link">AI Record</NavLink>
+          </li>
+          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/ai-record' ? 'active' : ''}`}>
+            <FontAwesomeIcon icon={faPowerOff} />
+            <NavLink className="nav-link side-link" ><button className='border border-0 text-white bg-transparent' onClick={handleLogout}>Logout</button></NavLink>
           </li>
         </ul>
       </div>
