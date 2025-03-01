@@ -29,6 +29,7 @@ import Grades from "./pages/teacherPage/Grades";
 
 import GuardianDashboard from "./pages/guardianPage/Dashboard";
 import GuardianAnnouncement from "./pages/guardianPage/Announcement";
+import GuardianTeachersProfile from "./pages/guardianPage/TeachersProfile";
 
 import "./App.css";
 
@@ -93,6 +94,7 @@ function App() {
         {/* Guardian Routes */}
         <Route path="/guardiandashboard" element={<GuardianDashboard sidebarOpen={sidebarOpen} />} />
         <Route path="/guardian-announcement" element={<GuardianAnnouncement sidebarOpen={sidebarOpen} />} />
+        <Route path="/guardian-teachers-profile" element={<GuardianTeachersProfile sidebarOpen={sidebarOpen} />} />
       </Routes>
     </Router>
   );

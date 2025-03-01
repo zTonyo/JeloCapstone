@@ -2,8 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/logo.png';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faGaugeHigh, faGraduationCap, faPeopleRoof, faPersonChalkboard, faBullhorn, faClipboardUser, faNewspaper, faRobot } from '@awesome.me/kit-KIT_CODE/icons/classic/solid';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGauge, faGraduationCap, faPeopleRoof, faPersonChalkboard, faBullhorn, faClipboardUser, faNewspaper, faRobot } from '@fortawesome/free-solid-svg-icons';
 
 const NavBarGuardian = ({ sidebarOpen, setSidebarOpen }) => {
   const navigate = useNavigate();
@@ -55,7 +55,7 @@ const NavBarGuardian = ({ sidebarOpen, setSidebarOpen }) => {
         {/* Sidebar menu with NavLinks */}
         <ul className="nav flex-column sideBar-nav">
           <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/guardiandashboard' ? 'active' : ''}`}>
-          {/* <FontAwesomeIcon icon={faGaugeHigh} /> */}
+          <FontAwesomeIcon icon={faGauge} />
             <NavLink to="/guardiandashboard" className="nav-link side-link">Dashboard</NavLink>
           </li>
         </ul>
@@ -64,13 +64,13 @@ const NavBarGuardian = ({ sidebarOpen, setSidebarOpen }) => {
 
         <ul className="nav flex-column sideBar-nav">
           <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/guardian-announcement' ? 'active' : ''}`}>
-            {/* <FontAwesomeIcon icon={faBullhorn} /> */}
+            <FontAwesomeIcon icon={faBullhorn} />
             <NavLink to="/guardian-announcement" className="nav-link side-link">Announcement</NavLink>
           </li>
-          {/* <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/guardian-management' ? 'active' : ''}`}>
-            <FontAwesomeIcon icon={faPeopleRoof} />
-            <NavLink to="/guardian-management" className="nav-link side-link">Guardian Management</NavLink>
-          </li> */}
+          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/guardian-teachers-profile' ? 'active' : ''}`}>
+            <FontAwesomeIcon icon={faPersonChalkboard} />
+            <NavLink to="/guardian-teachers-profile" className="nav-link side-link">Teacher's Profile</NavLink>
+          </li>
           {/* <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/teacher-management' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faPersonChalkboard} />
             <NavLink to="/teacher-management" className="nav-link side-link">Teacher Management</NavLink>
