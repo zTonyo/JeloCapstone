@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import mainCDC from '../assets/cropMainCDC.png';
 import logo from '../assets/logo.png';
+import axios from 'axios';
 
 const serverPath = import.meta.env.VITE_BASE_PATH;
 
@@ -9,15 +10,40 @@ const serverPath = import.meta.env.VITE_BASE_PATH;
 const TeacherLogin = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const [searchParams] = useSearchParams();
+  const confirmed = searchParams.get("confirmed");
+  const error = searchParams.get("error");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    
-    if (username === 'w' && password === 'w') {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        `${serverPath}/api/teacher/signin`,
+        { username, password },
+        { withCredentials: true } // Ensures cookies (sessions) are included
+      );
+      localStorage.setItem("profilePicture", response.data.profilePicture || null);
+      localStorage.setItem("isLoggedIn", "true");
       onLogin();
       navigate('/teacherdashboard');
+    } catch (error) {
+      console.log(error);
+      setMessage(error.response?.data?.message || "Invalid credentials");
     }
   };
+
+  useEffect(() => {
+    if (confirmed) {
+        setMessage("Your email has been confirmed! You can now log in.");
+    } else if (error) {
+      setMessage(error === "expired" ? "Confirmation link expired!" : "Invalid confirmation link.");
+    }
+}, [confirmed, error]);
+
+
   
   return (
     <div className="teacher-container d-flex justify-content-around">
@@ -36,14 +62,29 @@ const TeacherLogin = ({ onLogin }) => {
           alt="logo"
         />
         <p className="text-center">Login to your Teacher account</p>
+        {message && <div className="alert alert-info text-center">{message}</div>}
         <form onSubmit={handleSubmit} id="loginForm">
           <div className="form-group">
-            <label htmlFor="username">Username</label>
-            <input type="text" className="form-control" id="username" value={username} placeholder="Enter username" onChange={(e)=>setUsername(e.target.value)} required/>
+            <label htmlFor="email">Email</label>
+            <input 
+              type="email" 
+              className="form-control" 
+              id="email" 
+              value={username} 
+              placeholder="johndoe@gmail.com" 
+              onChange={(e)=>setUsername(e.target.value)} 
+              required/>
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
-            <input type="password" className="form-control" id="password" value={password} placeholder="Enter password" onChange={(e) => setPassword(e.target.value)} required/>
+            <input 
+              type="password" 
+              className="form-control" 
+              id="password" 
+              value={password} 
+              placeholder="Enter password" 
+              onChange={(e) => setPassword(e.target.value)} 
+              required/>
           </div>
           <div className="d-flex justify-content-between">
             <div className="remember-me form-group">

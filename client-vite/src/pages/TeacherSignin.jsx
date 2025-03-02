@@ -11,6 +11,7 @@ tailChase.register();
 
 const TeacherSignin = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false); // Loading state
 
   // State for form inputs
   const [formData, setFormData] = useState({
@@ -20,7 +21,6 @@ const TeacherSignin = () => {
     role: "",
   });
 
-  const [loading, setLoading] = useState(false); // Loading state
 
   // Handle input change
   const handleChange = (e) => {
@@ -36,7 +36,7 @@ const TeacherSignin = () => {
     setLoading(true); // Show loader
 
     try {
-      const response = await axios.post(`${serverPath}/api/teachers/signup`, formData);
+      const response = await axios.post(`${serverPath}/api/teacher/signup`, formData);
       alert("Account created successfully!");
       navigate('/teacherlogin');
     } catch (error) {

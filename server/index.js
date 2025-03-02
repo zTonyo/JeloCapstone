@@ -1,7 +1,8 @@
 require('dotenv').config();
 
 const express = require('express');
-const mysql = require('mysql2');
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
 const cors = require('cors');
 const multer = require('multer');
 const fs = require('fs')
@@ -11,37 +12,32 @@ const path = require('path');
 const db = require('./config/db');
 
 // Teacher Routes
-const teacherRoutes = require('./routes/teacherRoutes');
+const teacherRoutes = require('./routes/teacherRoute');
+const announcementRoutes = require('./routes/announcementRoute');
+
+// Error Handler
+const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 const port = process.env.PORT;
 
-app.use(cors());
 app.use(express.json());
+app.use(cors({
+  origin: ["http://localhost:5173", "http://localhost:5174"],
+  credentials: true
+}));
+app.use(cookieParser());
 
+app.use('/assets', express.static(path.resolve(__dirname, '..', 'client-vite', 'src', 'assets')));
 
 // For Teachers Only
 app.use('/api', teacherRoutes);
-
+app.use('/announcement', announcementRoutes);
 
 // End
 
-
-// MySQL Connection
-// const db = mysql.createConnection({
-//   host: process.env.HOST,
-//   user: process.env.USER,
-//   password: process.env.PASSWORD,
-//   database: process.env.DATABASENAME
-// });
-
-// db.connect((err) => {
-//   if (err) {
-//     console.error('Database connection failed:', err);
-//   } else {
-//   console.log('Connected to MySQL database!');
-//   }
-// });
+// Error handler
+app.use(errorHandler);
 
 //GET ALL ITEM
 app.get('/api/users', (req, res) => {
@@ -208,118 +204,6 @@ app.put('/api/updateGuardian/:fullName', (req, res) => {
     }
   );
 });
-
-// Multer for file upload
-const announcementStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadPath = path.resolve(__dirname, '..', 'client', 'src', 'assets', 'announcement');    
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
-    }
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    const fileExtension = path.extname(file.originalname);
-    cb(null, Date.now() + fileExtension);
-  },
-});
-const announcementUpload = multer({ storage: announcementStorage });
-
-// Create new announcement
-app.post('/api/announcement', announcementUpload.single('picture'), (req, res) => {
-  const { title, description, dateAndTime } = req.body;
-  const picture = req.file ? '/assets/announcement/' + req.file.filename : '';
-  const query = `
-    INSERT INTO announcement (title, description, dateAndTime, picture)
-    VALUES (?, ?, ?, ?)
-  `;
-  db.query(query, [title, description, dateAndTime, picture], (err, results) => {
-    if (err) {
-      console.error('Error inserting announcement into database:', err);
-      return res.status(500).json({ error: 'Failed to create announcement' });
-    }
-    res.status(201).json({
-      id: results.insertId,
-      title,
-      description,
-      dateAndTime,
-      picture,
-    });
-  });
-});
-
-// Update announcement
-app.put('/api/announcement/:id', announcementUpload.single('picture'), (req, res) => {
-  const { id } = req.params;
-  const { title, description, dateAndTime } = req.body;
-  const picture = req.file ? `/assets/announcement/${req.file.filename}` : '';
-  const query = `
-    UPDATE announcement
-    SET title = ?, description = ?, dateAndTime = ?, picture = ?
-    WHERE id = ?
-  `;
-  const queryValues = [title, description, dateAndTime, picture, id];
-  db.query(query, queryValues, (err, results) => {
-    if (err) {
-      console.error('Error updating announcement:', err);
-      return res.status(500).json({ error: 'Failed to update announcement' });
-    }
-    if (results.affectedRows > 0) {
-      res.status(200).json({
-        message: 'Announcement updated successfully',
-        id,
-        title,
-        description,
-        dateAndTime,
-        picture: picture || undefined,
-      });
-    } else {
-      res.status(404).json({ message: 'Announcement not found' });
-    }
-  });
-});
-
-app.use('/assets', express.static(path.join(__dirname, '../client/src/assets')));
-
-// Get all announcements
-app.get('/api/announcement', (req, res) => {
-  const query = 'SELECT * FROM announcement';
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error('Error fetching announcements:', err);
-      return res.status(500).json({ error: 'Failed to fetch announcements' });
-    }
-    res.status(200).json(results);
-  });
-});
-
-// DELETE endpoint announcement
-app.delete('/api/announcement', (req, res) => {
-  const { description } = req.body;
-  const query = 'DELETE FROM announcement WHERE description = ?';
-  db.query(query, [description], (err, result) => {
-    if (err) {
-      console.error('Error deleting announcement:', err);
-      return res.status(500).json({ message: 'Error deleting announcement' });
-    }
-    if (result.affectedRows > 0) {
-      return res.status(200).json({ message: 'Announcement deleted successfully' });
-    } else {
-      return res.status(404).json({ message: 'Announcement not found' });
-    }
-  });
-});
-
-//Get announcement for guardian
-app.get('/api/announcement', (req, res) => {
-  db.query('SELECT title, description, dataAndTime, picture FROM announcements', (err, results) => {
-    if (err) {
-      return res.status(500).json({ message: 'Error fetching data', error: err });
-    }
-    res.json(results);
-  });
-});
-
 
 
 // Start the server
