@@ -2,5 +2,4 @@ node_modules/
 testitems.js
 dbItems.txt
 client/src/assets/announcement
-client/src/pages/GuardianSignin.js
-
+.env

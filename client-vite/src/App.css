@@ -766,3 +766,32 @@ a.nav-link {
   font-size: medium;
   margin-left: 45px;
 }
+
+/* Guardian teacher profile */
+.teacher-profile-infos {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.teacher-profile-container {
+  margin-left: 10%;
+  margin-top: 30px;
+}
+
+.teacher-profile-img {
+  border-radius: 8px;
+  box-shadow: 1px 1px 10px 2px rgba(0, 0, 0, 0.2);
+  padding: 20px 20px;
+  margin-right: 20px;
+}
+
+.teacher-profile-body-infos {
+  border-radius: 8px;
+  box-shadow: 1px 1px 10px 2px rgba(0, 0, 0, 0.2);
+  padding: 20px 20px;
+  margin-left: 20px;
+}
+
+.teacher-profile-info {
+  margin-left: 25px;
+}
