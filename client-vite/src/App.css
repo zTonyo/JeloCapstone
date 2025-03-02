@@ -804,3 +804,92 @@ a.nav-link {
   margin: 30px 20px;
   margin-right: 20%;
 }
+
+/* Guardian Attendance Page */
+.react-calendar {
+  font-family: 'Roboto', sans-serif;
+  border-radius: 8px;
+  box-shadow: 1px 1px 10px 2px rgba(0, 0, 0, 0.2);
+  padding: 20px 20px;
+  margin: 30px 20px;
+  border: none;
+  margin-right: 20%;
+  width: 85%;
+}
+
+.react-calendar__tile {
+  border-radius: 5px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  padding: 5px;
+  height: 60px;
+}
+
+.react-calendar__tile.present {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  border: none;
+}
+
+.react-calendar__tile.absent {
+  background-color: #f44336;
+  color: white;
+  padding: 10px;
+  border: none;
+}
+
+.react-calendar__tile:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #000;
+  font-size: large;
+  background-color: #006aff !important;
+}
+
+.react-calendar__navigation button {
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.react-calendar__navigation button:hover {
+  background-color: #1976d2;
+}
+
+.react-calendar__tile--now {
+  background-color: #fff;
+  color: #000 !important;
+  font-weight: bold;
+  /* transform: scale(1.1); */
+}
+
+.react-calendar__month-view__weekdays {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #2196f3;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  text-align: center;
+  padding: 0.5rem 0;
+  color: #333;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr {
+  font-size: 0.8rem;
+}
+
+.react-calendar__navigation__prev-button,
+.react-calendar__navigation__next-button {
+  color: #2196f3;
+  font-size: 1.5rem;
+}
+
+.react-calendar__navigation__prev-button:hover,
+.react-calendar__navigation__next-button:hover {
+  color: #1976d2;
+}

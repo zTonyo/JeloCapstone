@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGauge, faFolderOpen, faPeopleRoof, faPersonChalkboard, faBullhorn, faClipboardUser, faNewspaper, faRobot } from '@fortawesome/free-solid-svg-icons';
+import { faGauge, faFolderOpen, faCalendarDays, faPersonChalkboard, faBullhorn, faClipboardUser, faNewspaper, faRobot } from '@fortawesome/free-solid-svg-icons';
 
 const NavBarGuardian = ({ sidebarOpen, setSidebarOpen }) => {
   const navigate = useNavigate();
@@ -75,10 +75,10 @@ const NavBarGuardian = ({ sidebarOpen, setSidebarOpen }) => {
             <FontAwesomeIcon icon={faFolderOpen} />
             <NavLink to="/guardian-requirements" className="nav-link side-link">Requirements</NavLink>
           </li>
-          {/* <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/announcement' ? 'active' : ''}`}>
-            <FontAwesomeIcon icon={faBullhorn} />
-            <NavLink to="/announcement" className="nav-link side-link">Announcement</NavLink>
-          </li> */}
+          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/guardian-attendance' ? 'active' : ''}`}>
+            <FontAwesomeIcon icon={faCalendarDays} />
+            <NavLink to="/guardian-attendance" className="nav-link side-link">Attendance</NavLink>
+          </li>
           {/* <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/attendance' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faClipboardUser} />
             <NavLink to="/attendance" className="nav-link side-link">Attendance</NavLink>
