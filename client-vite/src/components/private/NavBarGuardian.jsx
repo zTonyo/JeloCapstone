@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGauge, faGraduationCap, faPeopleRoof, faPersonChalkboard, faBullhorn, faClipboardUser, faNewspaper, faRobot } from '@fortawesome/free-solid-svg-icons';
+import { faGauge, faFolderOpen, faPeopleRoof, faPersonChalkboard, faBullhorn, faClipboardUser, faNewspaper, faRobot } from '@fortawesome/free-solid-svg-icons';
 
 const NavBarGuardian = ({ sidebarOpen, setSidebarOpen }) => {
   const navigate = useNavigate();
@@ -71,10 +71,10 @@ const NavBarGuardian = ({ sidebarOpen, setSidebarOpen }) => {
             <FontAwesomeIcon icon={faPersonChalkboard} />
             <NavLink to="/guardian-teachers-profile" className="nav-link side-link">Teacher's Profile</NavLink>
           </li>
-          {/* <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/teacher-management' ? 'active' : ''}`}>
-            <FontAwesomeIcon icon={faPersonChalkboard} />
-            <NavLink to="/teacher-management" className="nav-link side-link">Teacher Management</NavLink>
-          </li> */}
+          <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/guardian-requirements' ? 'active' : ''}`}>
+            <FontAwesomeIcon icon={faFolderOpen} />
+            <NavLink to="/guardian-requirements" className="nav-link side-link">Requirements</NavLink>
+          </li>
           {/* <li className={`nav-item sideBar-item d-flex align-items-center ${window.location.pathname === '/announcement' ? 'active' : ''}`}>
             <FontAwesomeIcon icon={faBullhorn} />
             <NavLink to="/announcement" className="nav-link side-link">Announcement</NavLink>

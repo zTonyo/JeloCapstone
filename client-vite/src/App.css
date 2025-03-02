@@ -789,9 +789,18 @@ a.nav-link {
   border-radius: 8px;
   box-shadow: 1px 1px 10px 2px rgba(0, 0, 0, 0.2);
   padding: 20px 20px;
-  margin-left: 20px;
+  margin: 0px 20px;
 }
 
 .teacher-profile-info {
   margin-left: 25px;
+}
+
+/* Guardian Requirement Page */
+.guardian-requirement-container {
+  border-radius: 8px;
+  box-shadow: 1px 1px 10px 2px rgba(0, 0, 0, 0.2);
+  padding: 20px 20px;
+  margin: 30px 20px;
+  margin-right: 20%;
 }
